@@ -323,11 +323,13 @@
   .role::before{content:"";position:absolute;top:0;left:0;right:0;height:6px}
   .role.r1::before{background:var(--moss)} .role.r2::before{background:var(--leaf)}
   .role.r3::before{background:var(--green)} .role.r4::before{background:var(--earth)}
+  .role.r5::before{background:var(--forest)}
   .role .lvl{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--earth)}
   .role .r-icon{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;color:#fff;
     font-size:22px;margin:12px 0 14px}
   .role.r1 .r-icon{background:var(--moss)} .role.r2 .r-icon{background:var(--leaf)}
   .role.r3 .r-icon{background:var(--green)} .role.r4 .r-icon{background:var(--earth)}
+  .role.r5 .r-icon{background:var(--forest)}
   .role h3{font-size:18px;color:var(--forest);margin-bottom:4px}
   .role .r-sub{color:var(--mute);font-size:13px;margin-bottom:16px}
   .role .r-need{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:10px}
