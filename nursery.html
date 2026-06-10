@@ -30,6 +30,8 @@
   </div>
 </nav>
 
+<div class="pagebar"><div class="fill" id="pgfill"></div></div>
+
 <!-- HERO -->
 <header class="hero" id="top">
   <span class="blob b1"></span><span class="blob b2"></span>
@@ -396,41 +398,89 @@
   </div>
 </div></section>
 
+<div class="pager">
+  <div class="pager-in">
+    <button class="pbtn ghost" id="prevBtn"><i class="fa-solid fa-arrow-left"></i> Previous</button>
+    <div class="pmeta">
+      <div class="pstep" id="pstep">Step 1</div>
+      <div class="pname" id="pname"></div>
+    </div>
+    <button class="pbtn" id="nextBtn">Next <i class="fa-solid fa-arrow-right"></i></button>
+  </div>
+</div>
+
 <footer>
-  <p><b>MJM Group Training Center</b> · Nursery Training</p>
+  <p><b>MJM Training Center</b> · Nursery Training</p>
   <p style="margin-top:6px;opacity:.8">Staff training guide · from seed planting to seedling sales</p>
 </footer>
 
 <script>
-  // mobile nav toggle
+(function(){
+  var body=document.body;
   var toggle=document.getElementById('navToggle'),links=document.getElementById('navLinks');
   toggle.addEventListener('click',function(){links.classList.toggle('open');});
-  links.addEventListener('click',function(e){if(e.target.tagName==='A')links.classList.remove('open');});
 
-  // active link on scroll
-  var sections=[].slice.call(document.querySelectorAll('section.slide'));
-  var navmap={};
-  [].forEach.call(links.querySelectorAll('a'),function(a){navmap[a.getAttribute('href').slice(1)]=a;});
-  var spy=new IntersectionObserver(function(entries){
-    entries.forEach(function(en){
-      if(en.isIntersecting){
-        var a=navmap[en.target.id];
-        if(a){[].forEach.call(links.querySelectorAll('a'),function(x){x.classList.remove('active');});a.classList.add('active');}
-      }
-    });
-  },{rootMargin:'-45% 0px -50% 0px'});
-  sections.forEach(function(s){if(navmap[s.id])spy.observe(s);});
+  var hero=document.getElementById('top');
+  var steps=[].slice.call(document.querySelectorAll('section.slide'));
+  var fill=document.getElementById('pgfill');
+  var stepEl=document.getElementById('pstep'),nameEl=document.getElementById('pname');
+  var prevBtn=document.getElementById('prevBtn'),nextBtn=document.getElementById('nextBtn');
+  var total=steps.length, cur=0;
 
-  // scroll reveal
-  var reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
-  if(!reduce){
-    var rev=new IntersectionObserver(function(entries){
-      entries.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');rev.unobserve(en.target);}});
-    },{threshold:.12});
-    [].forEach.call(document.querySelectorAll('.reveal'),function(el){rev.observe(el);});
-  }else{
-    [].forEach.call(document.querySelectorAll('.reveal'),function(el){el.classList.add('in');});
+  // reveal everything up front; per-page animation handles the entrance
+  [].forEach.call(document.querySelectorAll('.reveal'),function(el){el.classList.add('in');});
+
+  // map "#id" -> step index for nav links
+  var idIndex={};
+  steps.forEach(function(s,i){idIndex[s.id]=i;});
+
+  function nameOf(sec){var t=sec.querySelector('.slide-title');return t?t.textContent.trim():'';}
+
+  function show(i,scroll){
+    cur=Math.max(0,Math.min(total-1,i));
+    steps.forEach(function(s,idx){s.classList.toggle('active',idx===cur);});
+    if(hero) hero.style.display=(cur===0?'':'none');
+    fill.style.width=((cur+1)/total*100)+'%';
+    stepEl.textContent='Step '+(cur+1)+' of '+total;
+    nameEl.textContent=nameOf(steps[cur]);
+    prevBtn.disabled=(cur===0);
+    nextBtn.innerHTML=(cur===total-1)
+      ? 'Finish <i class="fa-solid fa-check"></i>'
+      : 'Next <i class="fa-solid fa-arrow-right"></i>';
+    [].forEach.call(links.querySelectorAll('a'),function(x){x.classList.remove('active');});
+    var nl=links.querySelector('a[href="#'+steps[cur].id+'"]');
+    if(nl) nl.classList.add('active');
+    if(scroll!==false) window.scrollTo({top:0,behavior:'smooth'});
   }
+
+  prevBtn.addEventListener('click',function(){ if(cur>0) show(cur-1); });
+  nextBtn.addEventListener('click',function(){
+    if(cur<total-1) show(cur+1);
+    else window.location.href='index.html';
+  });
+
+  // nav links jump to the matching page; other links navigate normally
+  links.addEventListener('click',function(e){
+    var a=e.target.closest('a'); if(!a) return;
+    links.classList.remove('open');
+    var href=a.getAttribute('href');
+    if(href && href.charAt(0)==='#'){
+      e.preventDefault();
+      var id=href.slice(1);
+      if(id in idIndex) show(idIndex[id]);
+    }
+  });
+
+  // keyboard navigation
+  document.addEventListener('keydown',function(e){
+    if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
+    if(e.key==='ArrowRight'){ if(cur<total-1) show(cur+1); }
+    else if(e.key==='ArrowLeft'){ if(cur>0) show(cur-1); }
+  });
+
+  body.classList.add('paged');
+  show(0,false);
+})();
 </script>
 </body>
 </html>
