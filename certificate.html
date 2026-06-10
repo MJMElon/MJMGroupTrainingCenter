@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Earn a Certificate — MJM Training Center</title>
+<meta name="description" content="Select a course and take the assessment to earn your MJM certificate of completion.">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="index.html"><i class="fa-solid fa-award"></i> Earn a Certificate</a>
+    <a class="homelink" href="index.html"><i class="fa-solid fa-arrow-left"></i> All Modules</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <span class="blob b1"></span><span class="blob b2"></span>
+  <div class="hero-in">
+    <div class="seed"><i class="fa-solid fa-award"></i></div>
+    <div class="eyebrow">Certification</div>
+    <h1>Earn a Certificate</h1>
+    <div class="rule"></div>
+    <p class="lede">Choose the course you've completed, then take its assessment to earn your certificate of completion.</p>
+  </div>
+</header>
+
+<section class="slide"><div class="wrap">
+  <div class="cert-pick">
+    <label for="courseSelect">Select a course</label>
+    <div class="cert-select">
+      <select id="courseSelect" aria-label="Select a course">
+        <option value="" selected disabled>— Choose a course to get certified in —</option>
+        <optgroup label="Nursery Training">
+          <option value="Nursery Operation">Nursery Operation</option>
+          <option value="Sales">Sales</option>
+          <option value="Troubleshoot &amp; Cases">Troubleshoot &amp; Cases</option>
+          <option value="Admin Operation">Admin Operation</option>
+          <option value="COPN — Code of Practice">COPN — Code of Practice</option>
+          <option value="Team &amp; Resource Management">Team &amp; Resource Management</option>
+        </optgroup>
+        <optgroup label="Vibe Coding">
+          <option value="Vibe Coding Class">Vibe Coding Class</option>
+        </optgroup>
+      </select>
+      <i class="fa-solid fa-chevron-down chev"></i>
+    </div>
+
+    <div class="cert-panel" id="certPanel">
+      <div class="certificate">
+        <div class="seal"><i class="fa-solid fa-award"></i></div>
+        <div class="ctag">Certificate of Completion</div>
+        <h3>MJM Training Center</h3>
+        <p class="cfor">This certifies completion of the course</p>
+        <div class="ccourse" id="certCourse">—</div>
+        <button class="btn" id="startBtn"><i class="fa-solid fa-clipboard-check"></i> Start assessment</button>
+        <div class="cert-note" id="certNote"></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<footer>
+  <p><b>MJM Training Center</b> · Certification</p>
+</footer>
+
+<script>
+(function(){
+  var sel=document.getElementById('courseSelect'),
+      panel=document.getElementById('certPanel'),
+      courseEl=document.getElementById('certCourse'),
+      startBtn=document.getElementById('startBtn'),
+      note=document.getElementById('certNote');
+
+  function decode(s){var t=document.createElement('textarea');t.innerHTML=s;return t.value;}
+
+  sel.addEventListener('change',function(){
+    if(!sel.value){panel.classList.remove('show');return;}
+    courseEl.textContent=decode(sel.value);
+    note.innerHTML='';
+    panel.classList.add('show');
+    panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+  });
+
+  startBtn.addEventListener('click',function(){
+    if(!sel.value){note.textContent='Please select a course first.';return;}
+    note.innerHTML='The assessment for <b>'+decode(sel.value)+'</b> is coming soon. '+
+      'Once it\'s ready, pass it here to unlock your certificate.';
+  });
+})();
+</script>
+
+</body>
+</html>
