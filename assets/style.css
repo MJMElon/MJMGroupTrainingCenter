@@ -349,7 +349,8 @@
   .matrix .rdot.r1{background:var(--moss)} .matrix .rdot.r2{background:var(--leaf)}
   .matrix .rdot.r3{background:var(--green)} .matrix .rdot.r4{background:var(--earth)}
   .matrix .rdot.r5{background:#fff;color:var(--forest)}
-  .matrix .rname{display:block;line-height:1.2;min-height:2.4em}
+  .matrix .rname{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;
+    line-height:1.2;min-height:2.4em}
   .matrix .skill{text-align:left;font-weight:700;color:var(--forest);font-size:14px;white-space:nowrap}
   .matrix .skill i{color:var(--green);margin-right:8px;width:18px;text-align:center}
   .matrix tbody tr:nth-child(even){background:#fff}
