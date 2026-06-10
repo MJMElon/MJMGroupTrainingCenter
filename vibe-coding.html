@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Coding Training</title>
+<meta name="description" content="Vibe coding training module (password protected).">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<!-- PASSWORD GATE -->
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <div class="lock"><i class="fa-solid fa-lock"></i></div>
+    <h2>Vibe Coding</h2>
+    <p>This module is password-protected. Enter the password to view it.</p>
+    <input type="password" id="pw" inputmode="numeric" placeholder="••••" autocomplete="off" aria-label="Password">
+    <div class="gate-err" id="pwErr"></div>
+    <button class="btn" id="pwBtn" style="width:100%;justify-content:center;margin-top:0"><i class="fa-solid fa-unlock"></i> Unlock module</button>
+    <a class="gate-back" href="index.html"><i class="fa-solid fa-arrow-left"></i> Back to all modules</a>
+  </div>
+</div>
+
+<!-- CONTENT (revealed after unlock) -->
+<div class="locked-body" id="lockedBody">
+  <nav class="topbar">
+    <div class="topbar-in">
+      <a class="brand" href="index.html"><i class="fa-solid fa-laptop-code"></i> Vibe Coding</a>
+      <a class="homelink" href="index.html"><i class="fa-solid fa-arrow-left"></i> All Modules</a>
+    </div>
+  </nav>
+
+  <section class="slide"><div class="wrap">
+    <div class="coming">
+      <div class="cs-icon"><i class="fa-solid fa-laptop-code"></i></div>
+      <div class="kicker">Coding Training</div>
+      <h2>Vibe Coding</h2>
+      <p>You're in — this module is being prepared.</p>
+      <p>The full training content will be added here soon.</p>
+      <a class="btn" href="index.html"><i class="fa-solid fa-arrow-left"></i> Back to all modules</a>
+    </div>
+  </div></section>
+
+  <footer>
+    <p><b>Training Hub</b></p>
+    <p style="margin-top:6px;opacity:.8">Field, estate &amp; coding training modules</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var KEY='vibeUnlocked';
+  var gate=document.getElementById('gate'),body=document.getElementById('lockedBody'),
+      input=document.getElementById('pw'),btn=document.getElementById('pwBtn'),err=document.getElementById('pwErr');
+  function unlock(){gate.classList.add('hidden');body.classList.add('shown');try{sessionStorage.setItem(KEY,'1');}catch(e){}}
+  try{if(sessionStorage.getItem(KEY)==='1'){unlock();}}catch(e){}
+  function check(){
+    if(input.value===atob('MTE4MA==')){err.textContent='';unlock();}
+    else{err.textContent='Incorrect password. Try again.';gate.classList.add('shake');
+      input.value='';input.focus();setTimeout(function(){gate.classList.remove('shake');},460);}
+  }
+  btn.addEventListener('click',check);
+  input.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();check();}});
+  if(!gate.classList.contains('hidden'))input.focus();
+})();
+</script>
+</body>
+</html>
