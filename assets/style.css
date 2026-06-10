@@ -281,6 +281,10 @@
   .done-card h2{font-family:var(--serif);font-size:28px;color:var(--forest);margin-bottom:8px}
   .done-card p{color:var(--mute);font-size:15px}
   .done-card .btn{margin-top:22px}
+
+  /* ---------- seed illustrations (planting step) ---------- */
+  .seedfig-wrap{display:flex;justify-content:center;margin:2px 0 18px}
+  .seedfig{width:100%;max-width:280px;height:auto;display:block}
   .m-open{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:14px;color:var(--forest)}
   .m-open i{transition:transform .18s ease}
   .module-card:hover .m-open i{transform:translateX(4px)}

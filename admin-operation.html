@@ -40,7 +40,7 @@
   <div class="pager-in">
     <a class="phome" href="index.html"><i class="fa-solid fa-arrow-left"></i> Back to Homepage</a>
     <div class="pmeta">
-      <div class="pstep" id="pstep">Step 1</div>
+      <div class="pstep" id="pstep">Page 1</div>
       <div class="pname" id="pname"></div>
     </div>
     <div class="pbtns">
@@ -59,7 +59,7 @@
     <div class="done-seal"><i class="fa-solid fa-circle-check"></i></div>
     <h2>Congratulations!</h2>
     <p>You've finished the course.</p>
-    <a class="btn" href="index.html"><i class="fa-solid fa-house"></i> Back to Homepage</a>
+    <a class="btn" href="nursery.html"><i class="fa-solid fa-seedling"></i> Back to Nursery Training</a>
   </div>
 </div>
 
@@ -77,7 +77,7 @@
     cur=Math.max(0,Math.min(total-1,i));
     steps.forEach(function(s,idx){s.classList.toggle('active',idx===cur);});
     fill.style.width=((cur+1)/total*100)+'%';
-    stepEl.textContent='Step '+(cur+1)+' of '+total;
+    stepEl.textContent='Page '+(cur+1)+' of '+total;
     nameEl.textContent=nameOf(steps[cur]);
     prevBtn.disabled=(cur===0);
     nextBtn.innerHTML=(cur===total-1)?'Finish <i class="fa-solid fa-check"></i>':'Next <i class="fa-solid fa-arrow-right"></i>';
