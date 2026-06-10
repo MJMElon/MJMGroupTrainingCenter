@@ -336,14 +336,11 @@
   .matrix .skill{text-align:left;font-weight:700;color:var(--forest);font-size:14px;white-space:nowrap}
   .matrix .skill i{color:var(--green);margin-right:8px;width:18px;text-align:center}
   .matrix tbody tr:nth-child(even){background:#fff}
-  .matrix tr.base td{background:var(--card-e)}
   .matrix .tick{color:var(--leaf);font-size:16px}
   .matrix .no{color:#c7d0bb}
   .matrix .go{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:8px;
     background:var(--forest);color:#fff;font-size:14px;transition:background .15s,transform .15s}
   .matrix .go:hover{background:var(--green);transform:translateX(2px)}
-  .matrix .here{font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
-    color:var(--green);background:#dceac8;padding:3px 9px;border-radius:10px;white-space:nowrap}
   .path-note{margin-top:24px;background:var(--card-e);border:1px solid var(--line);border-radius:14px;
     padding:20px 22px;display:flex;gap:16px;align-items:flex-start}
   .path-note .icon-badge{flex:none;width:48px;height:48px;font-size:20px;background:var(--earth)}
