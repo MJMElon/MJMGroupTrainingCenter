@@ -267,6 +267,20 @@
     background:var(--forest);color:#fff;font-size:16px;transition:transform .18s ease,background .18s ease}
   .cert-banner:hover .cb-go{background:var(--green);transform:translateX(3px)}
   @media(max-width:560px){.cert-banner{flex-direction:column;text-align:center}}
+
+  /* ---------- course completion modal ---------- */
+  .done-modal{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;
+    padding:20px;background:rgba(27,42,23,.55)}
+  .done-modal.show{display:flex;animation:donefade .25s ease}
+  @keyframes donefade{from{opacity:0}to{opacity:1}}
+  .done-card{background:#fff;border-radius:20px;padding:42px 34px;max-width:400px;width:100%;text-align:center;
+    box-shadow:0 24px 60px rgba(0,0,0,.35);animation:donepop .3s ease}
+  @keyframes donepop{from{transform:scale(.9);opacity:0}to{transform:none;opacity:1}}
+  .done-seal{width:86px;height:86px;border-radius:50%;margin:0 auto 18px;display:grid;place-items:center;
+    font-size:44px;color:#fff;background:linear-gradient(135deg,var(--leaf),var(--green))}
+  .done-card h2{font-family:var(--serif);font-size:28px;color:var(--forest);margin-bottom:8px}
+  .done-card p{color:var(--mute);font-size:15px}
+  .done-card .btn{margin-top:22px}
   .m-open{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:14px;color:var(--forest)}
   .m-open i{transition:transform .18s ease}
   .module-card:hover .m-open i{transform:translateX(4px)}

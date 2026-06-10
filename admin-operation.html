@@ -54,6 +54,15 @@
   <p><b>MJM Training Center</b> · Admin Operation</p>
 </footer>
 
+<div class="done-modal" id="doneModal">
+  <div class="done-card">
+    <div class="done-seal"><i class="fa-solid fa-circle-check"></i></div>
+    <h2>Congratulations!</h2>
+    <p>You've finished the course.</p>
+    <a class="btn" href="index.html"><i class="fa-solid fa-house"></i> Back to Homepage</a>
+  </div>
+</div>
+
 <script>
 (function(){
   var body=document.body;
@@ -75,7 +84,7 @@
     if(scroll!==false) window.scrollTo({top:0,behavior:'smooth'});
   }
   prevBtn.addEventListener('click',function(){ if(cur>0) show(cur-1); });
-  nextBtn.addEventListener('click',function(){ if(cur<total-1) show(cur+1); else window.location.href='index.html'; });
+  nextBtn.addEventListener('click',function(){ if(cur<total-1) show(cur+1); else document.getElementById('doneModal').classList.add('show'); });
   document.addEventListener('keydown',function(e){
     if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
     if(e.key==='ArrowRight'){ if(cur<total-1) show(cur+1); }

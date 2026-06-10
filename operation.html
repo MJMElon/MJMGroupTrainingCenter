@@ -315,6 +315,15 @@
   <p style="margin-top:6px;opacity:.8">Staff training guide · from seed planting to seedling sales</p>
 </footer>
 
+<div class="done-modal" id="doneModal">
+  <div class="done-card">
+    <div class="done-seal"><i class="fa-solid fa-circle-check"></i></div>
+    <h2>Congratulations!</h2>
+    <p>You've finished the course.</p>
+    <a class="btn" href="index.html"><i class="fa-solid fa-house"></i> Back to Homepage</a>
+  </div>
+</div>
+
 <script>
 (function(){
   var body=document.body;
@@ -347,7 +356,7 @@
   prevBtn.addEventListener('click',function(){ if(cur>0) show(cur-1); });
   nextBtn.addEventListener('click',function(){
     if(cur<total-1) show(cur+1);
-    else window.location.href='index.html';
+    else document.getElementById('doneModal').classList.add('show');
   });
 
   // keyboard navigation
