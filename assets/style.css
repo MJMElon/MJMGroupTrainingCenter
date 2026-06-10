@@ -315,3 +315,61 @@
   /* locked-card note */
   .module-card .lock-note{font-size:12px;color:var(--earth-d);margin-bottom:14px;display:flex;
     align-items:center;gap:6px;font-weight:600}
+
+  /* ---------- role pathways ---------- */
+  .roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+  .role{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 22px;
+    box-shadow:0 3px 10px rgba(27,42,23,.07);display:flex;flex-direction:column;position:relative;overflow:hidden}
+  .role::before{content:"";position:absolute;top:0;left:0;right:0;height:6px}
+  .role.r1::before{background:var(--moss)} .role.r2::before{background:var(--leaf)}
+  .role.r3::before{background:var(--green)} .role.r4::before{background:var(--earth)}
+  .role .lvl{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--earth)}
+  .role .r-icon{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;color:#fff;
+    font-size:22px;margin:12px 0 14px}
+  .role.r1 .r-icon{background:var(--moss)} .role.r2 .r-icon{background:var(--leaf)}
+  .role.r3 .r-icon{background:var(--green)} .role.r4 .r-icon{background:var(--earth)}
+  .role h3{font-size:18px;color:var(--forest);margin-bottom:4px}
+  .role .r-sub{color:var(--mute);font-size:13px;margin-bottom:16px}
+  .role .r-need{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:10px}
+  .chips{display:flex;flex-direction:column;gap:8px;margin-top:auto}
+  .chip{display:flex;align-items:center;gap:10px;font-size:13.5px;font-weight:600;color:var(--forest);
+    background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;
+    transition:transform .15s,box-shadow .15s,border-color .15s}
+  a.chip:hover{transform:translateX(3px);border-color:var(--leaf);box-shadow:0 3px 10px rgba(27,42,23,.10)}
+  .chip > i:first-child{width:20px;text-align:center;color:var(--green)}
+  .chip .tag{margin-left:auto;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    padding:2px 8px;border-radius:10px}
+  .chip .tag.ready{color:var(--green);background:#dceac8}
+  .chip .tag.soon{color:var(--earth-d);background:#f0dcc8}
+  .path-note{margin-top:24px;background:var(--card-e);border:1px solid var(--line);border-radius:14px;
+    padding:20px 22px;display:flex;gap:16px;align-items:flex-start}
+  .path-note .icon-badge{flex:none;width:48px;height:48px;font-size:20px;background:var(--earth)}
+  .path-note h3{font-size:16px;color:var(--forest);margin-bottom:6px}
+  .path-note p{color:var(--mute);font-size:13.5px}
+  .path-note b{color:var(--forest)}
+
+  /* ---------- paged walkthrough (nursery) ---------- */
+  body.paged .slide{display:none;border-bottom:0}
+  body.paged .slide.active{display:block;animation:pagein .4s ease}
+  @keyframes pagein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .pagebar{position:sticky;top:0;z-index:40;height:5px;background:var(--line)}
+  .pagebar .fill{height:100%;background:var(--earth);width:0;transition:width .35s ease}
+  .pager{position:sticky;bottom:0;z-index:45;background:#fff;border-top:1px solid var(--line);
+    box-shadow:0 -3px 12px rgba(27,42,23,.08)}
+  .pager-in{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-content:space-between;
+    gap:14px;padding:12px 20px}
+  .pager .pbtn{display:inline-flex;align-items:center;gap:8px;background:var(--forest);color:#fff;font-weight:700;
+    font-size:14px;padding:11px 20px;border-radius:10px;border:0;cursor:pointer;font-family:var(--sans);
+    transition:background .15s,opacity .15s}
+  .pager .pbtn:hover{background:var(--green)}
+  .pager .pbtn[disabled]{opacity:.35;cursor:not-allowed}
+  .pager .pbtn.ghost{background:transparent;color:var(--forest);border:1.5px solid var(--line)}
+  .pager .pbtn.ghost:hover{background:var(--card)}
+  .pager .pmeta{text-align:center;min-width:0;flex:1}
+  .pager .pstep{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--earth)}
+  .pager .pname{font-family:var(--serif);font-weight:700;color:var(--forest);font-size:15px;margin-top:2px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  @media (max-width:560px){
+    .pager .pname{display:none}
+    .pager .pbtn{padding:11px 15px}
+  }
