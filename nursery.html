@@ -11,25 +11,6 @@
 <body>
 
 
-<!-- NAV -->
-<nav class="topbar">
-  <div class="topbar-in">
-    <a class="brand" href="index.html"><i class="fa-solid fa-seedling"></i> Nursery Training</a>
-    <button class="navtoggle" aria-label="Toggle menu" id="navToggle"><i class="fa-solid fa-bars"></i></button>
-    <div class="navlinks" id="navLinks">
-      <a href="index.html"><i class="fa-solid fa-house"></i> All Modules</a>
-      <a href="#stages">Stages</a>
-      <a href="#planting">Seed Planting</a>
-      <a href="#pre-nursery">Pre-Nursery</a>
-      <a href="#main-nursery">Main Nursery</a>
-      <a href="#culling">Culling</a>
-      <a href="#transplanting">Transplanting</a>
-      <a href="#collection">Sales</a>
-      <a href="#reports">Reports</a>
-    </div>
-  </div>
-</nav>
-
 <div class="pagebar"><div class="fill" id="pgfill"></div></div>
 
 <!-- HERO -->
@@ -400,12 +381,15 @@
 
 <div class="pager">
   <div class="pager-in">
-    <button class="pbtn ghost" id="prevBtn"><i class="fa-solid fa-arrow-left"></i> Previous</button>
+    <a class="phome" href="index.html"><i class="fa-solid fa-table-cells-large"></i> All Modules</a>
     <div class="pmeta">
       <div class="pstep" id="pstep">Step 1</div>
       <div class="pname" id="pname"></div>
     </div>
-    <button class="pbtn" id="nextBtn">Next <i class="fa-solid fa-arrow-right"></i></button>
+    <div class="pbtns">
+      <button class="pbtn ghost" id="prevBtn"><i class="fa-solid fa-arrow-left"></i> <span class="lbl">Previous</span></button>
+      <button class="pbtn" id="nextBtn">Next <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
   </div>
 </div>
 
@@ -417,9 +401,6 @@
 <script>
 (function(){
   var body=document.body;
-  var toggle=document.getElementById('navToggle'),links=document.getElementById('navLinks');
-  toggle.addEventListener('click',function(){links.classList.toggle('open');});
-
   var hero=document.getElementById('top');
   var steps=[].slice.call(document.querySelectorAll('section.slide'));
   var fill=document.getElementById('pgfill');
@@ -429,10 +410,6 @@
 
   // reveal everything up front; per-page animation handles the entrance
   [].forEach.call(document.querySelectorAll('.reveal'),function(el){el.classList.add('in');});
-
-  // map "#id" -> step index for nav links
-  var idIndex={};
-  steps.forEach(function(s,i){idIndex[s.id]=i;});
 
   function nameOf(sec){var t=sec.querySelector('.slide-title');return t?t.textContent.trim():'';}
 
@@ -447,9 +424,6 @@
     nextBtn.innerHTML=(cur===total-1)
       ? 'Finish <i class="fa-solid fa-check"></i>'
       : 'Next <i class="fa-solid fa-arrow-right"></i>';
-    [].forEach.call(links.querySelectorAll('a'),function(x){x.classList.remove('active');});
-    var nl=links.querySelector('a[href="#'+steps[cur].id+'"]');
-    if(nl) nl.classList.add('active');
     if(scroll!==false) window.scrollTo({top:0,behavior:'smooth'});
   }
 
@@ -457,18 +431,6 @@
   nextBtn.addEventListener('click',function(){
     if(cur<total-1) show(cur+1);
     else window.location.href='index.html';
-  });
-
-  // nav links jump to the matching page; other links navigate normally
-  links.addEventListener('click',function(e){
-    var a=e.target.closest('a'); if(!a) return;
-    links.classList.remove('open');
-    var href=a.getAttribute('href');
-    if(href && href.charAt(0)==='#'){
-      e.preventDefault();
-      var id=href.slice(1);
-      if(id in idIndex) show(idIndex[id]);
-    }
   });
 
   // keyboard navigation

@@ -371,7 +371,15 @@
   .pager .pstep{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--earth)}
   .pager .pname{font-family:var(--serif);font-weight:700;color:var(--forest);font-size:15px;margin-top:2px;
     white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pager .phome{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--forest);
+    white-space:nowrap;padding:8px 4px}
+  .pager .phome:hover{color:var(--green)}
+  .pager .pbtns{display:flex;gap:10px}
   @media (max-width:560px){
     .pager .pname{display:none}
     .pager .pbtn{padding:11px 15px}
+    .pager .phome .lbl,.pager .pbtn .lbl{display:none}
+    .pager .phome{font-size:0}
+    .pager .phome i{font-size:16px}
+    .pager-in{gap:8px}
   }
