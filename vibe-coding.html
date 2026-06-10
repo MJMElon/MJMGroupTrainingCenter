@@ -2864,7 +2864,6 @@
     <!-- PASSWORD GATE LOGIC (password: 1180) -->
     <script>
     (function(){
-        var KEY = 'mjmVibeUnlocked';
         var gate = document.getElementById('vcGate'),
             input = document.getElementById('vcPw'),
             btn = document.getElementById('vcBtn'),
@@ -2872,9 +2871,7 @@
         function unlock(){
             gate.classList.add('unlocked');
             document.body.classList.remove('vc-locked');
-            try { sessionStorage.setItem(KEY, '1'); } catch(e){}
         }
-        try { if (sessionStorage.getItem(KEY) === '1') { unlock(); } } catch(e){}
         function check(){
             if (input.value === atob('MTE4MA==')) { err.textContent = ''; unlock(); }
             else {
