@@ -252,6 +252,21 @@
   .mbadge.lock{background:#f0dcc8;color:var(--earth-d)}
   .mbadge.gold{background:#f5e6c4;color:#8a6a1f}
   .module-card.cert .m-icon{background:linear-gradient(135deg,#d9a441,#b07c22)}
+
+  /* ---------- certificate banner (own section) ---------- */
+  .cert-banner{display:flex;align-items:center;gap:22px;background:linear-gradient(135deg,#fffaf0,#f6edd6);
+    border:1px solid #e3cf9e;border-radius:18px;padding:26px 28px;box-shadow:0 3px 12px rgba(120,90,20,.10);
+    color:inherit;transition:transform .18s ease,box-shadow .18s ease}
+  .cert-banner:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(120,90,20,.18)}
+  .cert-banner .cb-icon{flex:none;width:64px;height:64px;border-radius:16px;display:grid;place-items:center;
+    color:#fff;font-size:28px;background:linear-gradient(135deg,#d9a441,#b07c22)}
+  .cert-banner .cb-text{flex:1;min-width:0}
+  .cert-banner .cb-text h3{font-size:21px;color:var(--forest);margin-bottom:6px}
+  .cert-banner .cb-text p{color:var(--mute);font-size:14px}
+  .cert-banner .cb-go{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+    background:var(--forest);color:#fff;font-size:16px;transition:transform .18s ease,background .18s ease}
+  .cert-banner:hover .cb-go{background:var(--green);transform:translateX(3px)}
+  @media(max-width:560px){.cert-banner{flex-direction:column;text-align:center}}
   .m-open{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:14px;color:var(--forest)}
   .m-open i{transition:transform .18s ease}
   .module-card:hover .m-open i{transform:translateX(4px)}
@@ -334,8 +349,8 @@
   .matrix .rdot.r1{background:var(--moss)} .matrix .rdot.r2{background:var(--leaf)}
   .matrix .rdot.r3{background:var(--green)} .matrix .rdot.r4{background:var(--earth)}
   .matrix .rdot.r5{background:#fff;color:var(--forest)}
-  .matrix .rname{display:block;line-height:1.2}
-  .matrix .skill{text-align:center;font-weight:700;color:var(--forest);font-size:14px;white-space:nowrap}
+  .matrix .rname{display:block;line-height:1.2;min-height:2.4em}
+  .matrix .skill{text-align:left;font-weight:700;color:var(--forest);font-size:14px;white-space:nowrap}
   .matrix .skill i{color:var(--green);margin-right:8px;width:18px;text-align:center}
   .matrix tbody tr:nth-child(even){background:#fff}
   .matrix .tick{color:var(--leaf);font-size:16px}
