@@ -317,32 +317,33 @@
     align-items:center;gap:6px;font-weight:600}
 
   /* ---------- role pathways ---------- */
-  .roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
-  .role{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 22px;
-    box-shadow:0 3px 10px rgba(27,42,23,.07);display:flex;flex-direction:column;position:relative;overflow:hidden}
-  .role::before{content:"";position:absolute;top:0;left:0;right:0;height:6px}
-  .role.r1::before{background:var(--moss)} .role.r2::before{background:var(--leaf)}
-  .role.r3::before{background:var(--green)} .role.r4::before{background:var(--earth)}
-  .role.r5::before{background:var(--forest)}
-  .role .lvl{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--earth)}
-  .role .r-icon{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;color:#fff;
-    font-size:22px;margin:12px 0 14px}
-  .role.r1 .r-icon{background:var(--moss)} .role.r2 .r-icon{background:var(--leaf)}
-  .role.r3 .r-icon{background:var(--green)} .role.r4 .r-icon{background:var(--earth)}
-  .role.r5 .r-icon{background:var(--forest)}
-  .role h3{font-size:18px;color:var(--forest);margin-bottom:4px}
-  .role .r-sub{color:var(--mute);font-size:13px;margin-bottom:16px}
-  .role .r-need{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:10px}
-  .chips{display:flex;flex-direction:column;gap:8px;margin-top:auto}
-  .chip{display:flex;align-items:center;gap:10px;font-size:13.5px;font-weight:600;color:var(--forest);
-    background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;
-    transition:transform .15s,box-shadow .15s,border-color .15s}
-  a.chip:hover{transform:translateX(3px);border-color:var(--leaf);box-shadow:0 3px 10px rgba(27,42,23,.10)}
-  .chip > i:first-child{width:20px;text-align:center;color:var(--green)}
-  .chip .tag{margin-left:auto;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
-    padding:2px 8px;border-radius:10px}
-  .chip .tag.ready{color:var(--green);background:#dceac8}
-  .chip .tag.soon{color:var(--earth-d);background:#f0dcc8}
+  /* role × skill matrix */
+  .matrix-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:14px;
+    box-shadow:0 3px 10px rgba(27,42,23,.07)}
+  .matrix{width:100%;border-collapse:separate;border-spacing:0;min-width:660px;background:var(--card);
+    border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .matrix th,.matrix td{padding:14px 10px;text-align:center;border-bottom:1px solid var(--line)}
+  .matrix tbody tr:last-child td{border-bottom:0}
+  .matrix thead th{background:var(--forest);color:#fff;vertical-align:bottom;font-size:11.5px;font-weight:700}
+  .matrix thead th.skill-h{text-align:left;font-size:12px;letter-spacing:.04em}
+  .matrix thead th.open-h{font-size:11px;color:var(--moss)}
+  .matrix .rdot{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;
+    margin:0 auto 6px;color:#fff;font-size:15px}
+  .matrix .rdot.r1{background:var(--moss)} .matrix .rdot.r2{background:var(--leaf)}
+  .matrix .rdot.r3{background:var(--green)} .matrix .rdot.r4{background:var(--earth)}
+  .matrix .rdot.r5{background:#fff;color:var(--forest)}
+  .matrix .rname{display:block;line-height:1.2}
+  .matrix .skill{text-align:left;font-weight:700;color:var(--forest);font-size:14px;white-space:nowrap}
+  .matrix .skill i{color:var(--green);margin-right:8px;width:18px;text-align:center}
+  .matrix tbody tr:nth-child(even){background:#fff}
+  .matrix tr.base td{background:var(--card-e)}
+  .matrix .tick{color:var(--leaf);font-size:16px}
+  .matrix .no{color:#c7d0bb}
+  .matrix .go{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:8px;
+    background:var(--forest);color:#fff;font-size:14px;transition:background .15s,transform .15s}
+  .matrix .go:hover{background:var(--green);transform:translateX(2px)}
+  .matrix .here{font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    color:var(--green);background:#dceac8;padding:3px 9px;border-radius:10px;white-space:nowrap}
   .path-note{margin-top:24px;background:var(--card-e);border:1px solid var(--line);border-radius:14px;
     padding:20px 22px;display:flex;gap:16px;align-items:flex-start}
   .path-note .icon-badge{flex:none;width:48px;height:48px;font-size:20px;background:var(--earth)}
