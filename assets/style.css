@@ -286,3 +286,22 @@
   .locked-body.shown{display:block}
 
   @media (max-width:860px){ .modules{grid-template-columns:1fr} }
+
+  /* ---------- hub stats strip ---------- */
+  .hubstats{display:flex;flex-wrap:wrap;gap:16px;margin-top:34px}
+  .stat{flex:1;min-width:150px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);
+    border-radius:14px;padding:18px 20px}
+  .stat .n{font-family:var(--serif);font-weight:700;font-size:30px;color:#fff;line-height:1}
+  .stat .l{color:var(--moss);font-size:13px;margin-top:6px}
+  @media (max-width:680px){ .stat{min-width:calc(50% - 8px)} }
+
+  /* ---------- brand mark ---------- */
+  .brand .mjm{background:var(--earth);color:#fff;font-family:var(--serif);font-weight:700;
+    border-radius:8px;padding:2px 8px;font-size:15px;letter-spacing:.02em}
+  .hero .brandrow{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+  .hero .brandrow .mjm{background:var(--earth);color:#fff;font-family:var(--serif);font-weight:700;
+    border-radius:10px;padding:6px 12px;font-size:20px}
+
+  /* locked-card note */
+  .module-card .lock-note{font-size:12px;color:var(--earth-d);margin-bottom:14px;display:flex;
+    align-items:center;gap:6px;font-weight:600}
