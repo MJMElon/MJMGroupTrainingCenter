@@ -91,22 +91,41 @@
     <div class="card">
       <h3 style="color:var(--forest);font-size:20px;margin-bottom:14px">Root &amp; Leaf Orientation</h3>
       <div class="seedfig-wrap">
-        <svg class="seedfig" viewBox="0 0 240 290" role="img" aria-label="Germinated oil palm seed with the shoot pointing up and the root pointing down">
+        <svg class="seedfig" viewBox="0 0 240 300" role="img" aria-label="Germinated oil palm seed with the shoot pointing up and the root pointing down">
+          <defs>
+            <radialGradient id="nut" cx="42%" cy="34%" r="72%">
+              <stop offset="0%" stop-color="#6e4a2c"/>
+              <stop offset="55%" stop-color="#46301f"/>
+              <stop offset="100%" stop-color="#2a1a0d"/>
+            </radialGradient>
+            <linearGradient id="shoot" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stop-color="#4f8a2f"/>
+              <stop offset="100%" stop-color="#9ccb63"/>
+            </linearGradient>
+            <linearGradient id="root" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f2ead6"/>
+              <stop offset="100%" stop-color="#cdba91"/>
+            </linearGradient>
+          </defs>
+          <!-- up arrow -->
           <g stroke="#3E6B2E" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="120" y1="22" x2="120" y2="46"/>
-            <polyline points="110,34 120,22 130,34"/>
+            <line x1="120" y1="16" x2="120" y2="40"/>
+            <polyline points="110,28 120,16 130,28"/>
           </g>
-          <path d="M120,120 C107,96 109,70 120,50 C131,70 133,96 120,120 Z" fill="#4d7a32"/>
-          <path d="M120,116 L120,56" stroke="#2f5320" stroke-width="2"/>
-          <ellipse cx="120" cy="155" rx="50" ry="41" fill="#a9712f" stroke="#6f4a1d" stroke-width="3"/>
-          <path d="M82,142 Q120,131 158,144" stroke="#8a5a26" stroke-width="2" fill="none" opacity=".55"/>
-          <path d="M80,162 Q120,155 160,164" stroke="#8a5a26" stroke-width="2" fill="none" opacity=".55"/>
-          <ellipse cx="102" cy="140" rx="10" ry="6" fill="#c08b46" opacity=".7"/>
-          <path d="M120,194 C112,220 116,242 120,262 C124,242 128,220 120,194 Z" fill="#ece0c6" stroke="#c9b48a" stroke-width="2"/>
-          <path d="M120,222 q-13,3 -19,16" stroke="#c9b48a" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <path d="M120,236 q13,3 18,15" stroke="#c9b48a" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- plumule (shoot) -->
+          <path d="M120,124 C103,100 105,66 120,44 C135,66 137,100 120,124 Z" fill="url(#shoot)" stroke="#36661f" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M120,118 C115,94 116,70 120,50" stroke="#2f5320" stroke-width="1.5" fill="none" opacity=".5"/>
+          <!-- seed (nut) -->
+          <ellipse cx="120" cy="162" rx="50" ry="42" fill="url(#nut)" stroke="#1f1207" stroke-width="2.5"/>
+          <ellipse cx="102" cy="148" rx="14" ry="9" fill="#8a5e38" opacity=".4"/>
+          <path d="M84,172 Q120,164 156,174" stroke="#1f1207" stroke-width="1.5" fill="none" opacity=".35"/>
+          <!-- radicle (root) -->
+          <path d="M120,202 C112,228 116,252 120,274 C124,252 128,228 120,202 Z" fill="url(#root)" stroke="#bfa97a" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M119,234 q-13,2 -20,15" stroke="#cdba91" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M121,248 q13,2 19,14" stroke="#cdba91" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- down arrow -->
           <g stroke="#9C5E2C" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="110,268 120,280 130,268"/>
+            <polyline points="110,282 120,294 130,282"/>
           </g>
         </svg>
       </div>
@@ -120,12 +139,19 @@
       <h3 style="color:var(--forest);font-size:20px;margin-bottom:16px"><i class="fa-solid fa-ruler-vertical" style="color:var(--green);margin-right:8px"></i>Planting Depth</h3>
       <div class="seedfig-wrap">
         <svg class="seedfig" viewBox="0 0 320 270" role="img" aria-label="Seed planted just below the soil surface inside a pot">
+          <defs>
+            <radialGradient id="potnut" cx="40%" cy="32%" r="75%">
+              <stop offset="0%" stop-color="#6e4a2c"/>
+              <stop offset="60%" stop-color="#46301f"/>
+              <stop offset="100%" stop-color="#2a1a0d"/>
+            </radialGradient>
+          </defs>
           <rect x="44" y="62" width="232" height="20" rx="9" fill="#9C5E2C"/>
           <path d="M58,82 L262,82 L232,250 Q231,256 225,256 L95,256 Q89,256 88,250 Z" fill="#C17A3F"/>
           <path d="M70,116 L250,116 L231,248 L89,248 Z" fill="#7a5a33"/>
           <line x1="70" y1="116" x2="250" y2="116" stroke="#5f4527" stroke-width="4"/>
-          <ellipse cx="172" cy="156" rx="23" ry="16" fill="#d8b27a" stroke="#a9824a" stroke-width="2.5"/>
-          <ellipse cx="164" cy="150" rx="6" ry="4" fill="#ecd6ad" opacity=".85"/>
+          <ellipse cx="172" cy="156" rx="23" ry="16" fill="url(#potnut)" stroke="#1f1207" stroke-width="2"/>
+          <ellipse cx="164" cy="150" rx="6" ry="3.5" fill="#8a623a" opacity=".7"/>
           <text x="172" y="201" text-anchor="middle" font-size="12" fill="#ecdcb8" font-weight="700">seed</text>
           <line x1="118" y1="116" x2="150" y2="116" stroke="#1E3A20" stroke-width="1" opacity=".4"/>
           <line x1="118" y1="140" x2="172" y2="140" stroke="#1E3A20" stroke-width="1" opacity=".4"/>
@@ -355,7 +381,7 @@
     <div class="done-seal"><i class="fa-solid fa-circle-check"></i></div>
     <h2>Congratulations!</h2>
     <p>You've finished the course.</p>
-    <a class="btn" href="nursery.html"><i class="fa-solid fa-seedling"></i> Back to Nursery Training</a>
+    <a class="btn" href="nursery.html"><i class="fa-solid fa-arrow-left"></i> Back to main page</a>
   </div>
 </div>
 
