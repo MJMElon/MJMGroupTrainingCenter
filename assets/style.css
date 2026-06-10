@@ -236,7 +236,7 @@
   .homelink:hover{background:rgba(255,255,255,.12);color:#fff}
 
   /* ---------- landing modules ---------- */
-  .modules{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .modules{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px}
   .module-card{display:flex;flex-direction:column;background:var(--card);border-radius:16px;padding:28px;
     box-shadow:0 3px 12px rgba(27,42,23,.08);transition:transform .18s ease,box-shadow .18s ease;
     color:inherit;border:1px solid var(--line)}
