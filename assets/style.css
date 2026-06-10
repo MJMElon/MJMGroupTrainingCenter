@@ -324,8 +324,8 @@
     border:1px solid var(--line);border-radius:14px;overflow:hidden}
   .matrix th,.matrix td{padding:14px 10px;text-align:center;border-bottom:1px solid var(--line)}
   .matrix tbody tr:last-child td{border-bottom:0}
-  .matrix thead th{background:var(--forest);color:#fff;vertical-align:bottom;font-size:11.5px;font-weight:700}
-  .matrix thead th.skill-h{text-align:left;font-size:12px;letter-spacing:.04em}
+  .matrix thead th{background:var(--forest);color:#fff;vertical-align:middle;font-size:11.5px;font-weight:700}
+  .matrix thead th.skill-h{text-align:center;font-size:12px;letter-spacing:.04em}
   .matrix thead th.open-h{font-size:11px;color:var(--moss)}
   .matrix .rdot{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;
     margin:0 auto 6px;color:#fff;font-size:15px}
@@ -333,7 +333,7 @@
   .matrix .rdot.r3{background:var(--green)} .matrix .rdot.r4{background:var(--earth)}
   .matrix .rdot.r5{background:#fff;color:var(--forest)}
   .matrix .rname{display:block;line-height:1.2}
-  .matrix .skill{text-align:left;font-weight:700;color:var(--forest);font-size:14px;white-space:nowrap}
+  .matrix .skill{text-align:center;font-weight:700;color:var(--forest);font-size:14px;white-space:nowrap}
   .matrix .skill i{color:var(--green);margin-right:8px;width:18px;text-align:center}
   .matrix tbody tr:nth-child(even){background:#fff}
   .matrix .tick{color:var(--leaf);font-size:16px}
