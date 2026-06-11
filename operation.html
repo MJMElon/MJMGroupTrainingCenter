@@ -89,50 +89,47 @@
   </div>
   <div class="split reveal">
     <div class="card">
-      <h3 style="color:var(--forest);font-size:20px;margin-bottom:14px">Root &amp; Leaf Orientation</h3>
+      <h3 style="color:var(--forest);font-size:20px;margin-bottom:14px">Telling Root from Shoot</h3>
       <div class="seedfig-wrap">
-        <svg class="seedfig" viewBox="0 0 240 300" role="img" aria-label="Germinated oil palm seed with the shoot pointing up and the root pointing down">
+        <svg class="seedfig" viewBox="0 0 280 290" role="img" aria-label="Germinated oil palm seed: two pale sprouts from one spot, the root being the longer one">
           <defs>
-            <radialGradient id="nut" cx="42%" cy="34%" r="72%">
+            <radialGradient id="nut" cx="44%" cy="40%" r="70%">
               <stop offset="0%" stop-color="#6e4a2c"/>
               <stop offset="55%" stop-color="#46301f"/>
-              <stop offset="100%" stop-color="#2a1a0d"/>
+              <stop offset="100%" stop-color="#241509"/>
             </radialGradient>
-            <linearGradient id="shoot" x1="0" y1="1" x2="0" y2="0">
-              <stop offset="0%" stop-color="#4f8a2f"/>
-              <stop offset="100%" stop-color="#9ccb63"/>
-            </linearGradient>
-            <linearGradient id="root" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#f2ead6"/>
-              <stop offset="100%" stop-color="#cdba91"/>
+            <linearGradient id="sprout" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stop-color="#dccba4"/>
+              <stop offset="100%" stop-color="#f6efdd"/>
             </linearGradient>
           </defs>
-          <!-- up arrow -->
-          <g stroke="#3E6B2E" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="120" y1="16" x2="120" y2="40"/>
-            <polyline points="110,28 120,16 130,28"/>
+          <!-- seed nut -->
+          <ellipse cx="140" cy="198" rx="88" ry="66" fill="url(#nut)" stroke="#1c1006" stroke-width="2.5"/>
+          <g stroke="#5a3e28" stroke-width="1.4" fill="none" opacity=".5" stroke-linecap="round">
+            <path d="M140,150 Q96,196 104,252"/>
+            <path d="M140,150 Q118,200 126,256"/>
+            <path d="M140,150 Q140,202 140,258"/>
+            <path d="M140,150 Q162,200 154,256"/>
+            <path d="M140,150 Q184,196 176,252"/>
+            <path d="M138,150 Q80,188 86,236"/>
+            <path d="M142,150 Q200,188 194,236"/>
           </g>
-          <!-- plumule (shoot) -->
-          <path d="M120,124 C103,100 105,66 120,44 C135,66 137,100 120,124 Z" fill="url(#shoot)" stroke="#36661f" stroke-width="1.5" stroke-linejoin="round"/>
-          <path d="M120,118 C115,94 116,70 120,50" stroke="#2f5320" stroke-width="1.5" fill="none" opacity=".5"/>
-          <!-- seed (nut) -->
-          <ellipse cx="120" cy="162" rx="50" ry="42" fill="url(#nut)" stroke="#1f1207" stroke-width="2.5"/>
-          <ellipse cx="102" cy="148" rx="14" ry="9" fill="#8a5e38" opacity=".4"/>
-          <path d="M84,172 Q120,164 156,174" stroke="#1f1207" stroke-width="1.5" fill="none" opacity=".35"/>
-          <!-- radicle (root) -->
-          <path d="M120,202 C112,228 116,252 120,274 C124,252 128,228 120,202 Z" fill="url(#root)" stroke="#bfa97a" stroke-width="1.5" stroke-linejoin="round"/>
-          <path d="M119,234 q-13,2 -20,15" stroke="#cdba91" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <path d="M121,248 q13,2 19,14" stroke="#cdba91" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <!-- down arrow -->
-          <g stroke="#9C5E2C" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="110,282 120,294 130,282"/>
-          </g>
+          <ellipse cx="140" cy="150" rx="22" ry="11" fill="#c9a06a" opacity=".45"/>
+          <!-- root (longer) -->
+          <path d="M132,148 C116,116 96,84 80,54 Q74,44 84,45 Q97,53 109,76 C122,100 136,126 144,146 Z" fill="url(#sprout)" stroke="#cbb588" stroke-width="1.5" stroke-linejoin="round"/>
+          <ellipse cx="82" cy="50" rx="7" ry="6" fill="#d09a55"/>
+          <!-- shoot (shorter) -->
+          <path d="M150,148 C162,124 176,106 190,92 Q197,85 200,93 Q197,102 185,114 C173,128 161,138 157,150 Z" fill="url(#sprout)" stroke="#cbb588" stroke-width="1.5" stroke-linejoin="round"/>
+          <ellipse cx="194" cy="91" rx="6.5" ry="5.5" fill="#d09a55"/>
+          <!-- labels -->
+          <text x="58" y="34" text-anchor="middle" font-size="12.5" font-weight="700" fill="#9C5E2C">Root — longer</text>
+          <text x="214" y="78" text-anchor="middle" font-size="12.5" font-weight="700" fill="#3E6B2E">Shoot</text>
         </svg>
       </div>
+      <div class="row-item"><div class="ring earth"><i class="fa-solid fa-ruler"></i></div>
+        <div><b>Radicle (root) — the longer sprout</b><br><span>Both sprouts grow from the same spot and look alike — the longer one is the root. When planting, point it DOWN into the soil.</span></div></div>
       <div class="row-item"><div class="ring leaf"><i class="fa-solid fa-arrow-up"></i></div>
-        <div><b>Plumule (shoot) points UP</b><br><span>The pointed green shoot faces upward toward the surface — it becomes the leaves.</span></div></div>
-      <div class="row-item"><div class="ring earth"><i class="fa-solid fa-arrow-down"></i></div>
-        <div><b>Radicle (root) points DOWN</b><br><span>The pale radicle faces downward into the soil.</span></div></div>
+        <div><b>Plumule (shoot) — the shorter sprout</b><br><span>The shorter sprout becomes the leaves. Point it UP toward the surface.</span></div></div>
       <p style="color:var(--earth-d);font-style:italic;font-size:13.5px;margin-top:6px">Wrong orientation slows growth or kills the seed. Always check before covering.</p>
     </div>
     <div class="card earthbg">
@@ -359,7 +356,7 @@
 
 <div class="pager">
   <div class="pager-in">
-    <a class="phome" href="index.html"><i class="fa-solid fa-arrow-left"></i> Back to Homepage</a>
+    <a class="phome" href="nursery.html"><i class="fa-solid fa-arrow-left"></i> Back to main page</a>
     <div class="pmeta">
       <div class="pstep" id="pstep">Page 1</div>
       <div class="pname" id="pname"></div>
