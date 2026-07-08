@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nursery Training — MJM Training Center</title>
 <meta name="description" content="Nursery training programs and the role-based pathway for each.">
+<meta name="theme-color" content="#1E3A20">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link rel="stylesheet" href="assets/style.css">
 </head>
@@ -109,6 +111,28 @@
 <footer>
   <p><b>MJM Training Center</b> · Nursery Training</p>
 </footer>
+
+<script>
+(function(){
+  var map={'operation.html':'operation','troubleshoot.html':'troubleshoot','admin-operation.html':'admin-operation',
+           'copn.html':'copn','sales.html':'sales','management.html':'management'};
+  try{
+    Object.keys(map).forEach(function(href){
+      var slug=map[href];
+      var cert=localStorage.getItem('mjm-cert-'+slug);
+      var done=localStorage.getItem('mjm-done-'+slug)==='1';
+      if(!cert&&!done) return;
+      var link=document.querySelector('.matrix a[href="'+href+'"]');
+      if(!link) return;
+      var cell=link.closest('tr').querySelector('.skill');
+      var pill=document.createElement('span');
+      pill.className='done-pill'+(cert?' cert':'');
+      pill.innerHTML=cert?'<i class="fa-solid fa-award"></i> Certified':'<i class="fa-solid fa-check"></i> Completed';
+      cell.appendChild(pill);
+    });
+  }catch(e){}
+})();
+</script>
 
 </body>
 </html>

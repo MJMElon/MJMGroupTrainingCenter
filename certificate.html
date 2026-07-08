@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Earn a Certificate — MJM Training Center</title>
 <meta name="description" content="Select a course and take the assessment to earn your MJM certificate of completion.">
+<meta name="theme-color" content="#1E3A20">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link rel="stylesheet" href="assets/style.css">
 </head>
@@ -24,7 +26,7 @@
     <div class="eyebrow">Certification</div>
     <h1>Earn a Certificate</h1>
     <div class="rule"></div>
-    <p class="lede">Choose the course you've completed, then take its assessment to earn your certificate of completion.</p>
+    <p class="lede">Choose the course you've completed, then pass its assessment to earn your certificate of completion.</p>
   </div>
 </header>
 
@@ -48,16 +50,31 @@
       </select>
       <i class="fa-solid fa-chevron-down chev"></i>
     </div>
+    <span class="cstatus" id="courseStatus" hidden></span>
 
     <div class="cert-panel" id="certPanel">
-      <div class="certificate">
+      <div class="certificate" id="certCard">
         <div class="seal"><i class="fa-solid fa-award"></i></div>
         <div class="ctag">Certificate of Completion</div>
         <h3>MJM Training Center</h3>
-        <p class="cfor">This certifies completion of the course</p>
+        <p class="cfor" id="certLead">This certifies completion of the course</p>
+        <div class="cname" id="certName" hidden>—</div>
         <div class="ccourse" id="certCourse">—</div>
-        <button class="btn" id="startBtn"><i class="fa-solid fa-clipboard-check"></i> Start assessment</button>
+        <div class="cmeta" id="certMeta" hidden>
+          <span id="certDate"><i class="fa-solid fa-calendar-check"></i></span>
+          <span id="certScore"><i class="fa-solid fa-clipboard-check"></i></span>
+        </div>
+        <div class="cert-actions" id="certActions"></div>
         <div class="cert-note" id="certNote"></div>
+      </div>
+
+      <div class="quiz" id="quiz">
+        <div class="quiz-top">
+          <div class="quiz-count" id="quizCount"></div>
+          <div class="quiz-course" id="quizCourse"></div>
+        </div>
+        <div class="quiz-bar"><div class="qfill" id="quizFill"></div></div>
+        <div class="qcard" id="qcard"></div>
       </div>
     </div>
   </div>
@@ -69,26 +86,306 @@
 
 <script>
 (function(){
-  var sel=document.getElementById('courseSelect'),
-      panel=document.getElementById('certPanel'),
-      courseEl=document.getElementById('certCourse'),
-      startBtn=document.getElementById('startBtn'),
-      note=document.getElementById('certNote');
+  var PASS_MARK = 4; // out of 5
 
-  function decode(s){var t=document.createElement('textarea');t.innerHTML=s;return t.value;}
+  var COURSES = {
+    'Nursery Operation': { slug:'operation', page:'operation.html', quiz:[
+      { q:'What is the correct order of the three nursery stages?',
+        opts:['Pre-Nursery → Seed Planting → Main Nursery',
+              'Seed Planting → Pre-Nursery → Main Nursery',
+              'Seed Planting → Main Nursery → Pre-Nursery',
+              'Main Nursery → Pre-Nursery → Seed Planting'], a:1 },
+      { q:'A germinated seed has two similar-looking sprouts. Which one is the root, and which way should it point?',
+        opts:['The shorter sprout — point it down',
+              'The longer sprout — point it up',
+              'The longer sprout — point it down',
+              'Either sprout — orientation doesn’t matter'], a:2 },
+      { q:'In the main nursery, how much water does each seedling get?',
+        opts:['1.5 L per seedling, every day',
+              '10 minutes per session, once a week',
+              '5 L per seedling, once a month',
+              '0.5 L per seedling, twice a month'], a:0 },
+      { q:'When lining up polybags for transplanting, what spacing is used between them?',
+        opts:['1 ft × 1 ft','2 ft × 5 ft','5 ft × 5 ft','3 ft × 3 ft'], a:3 },
+      { q:'How is the 2nd culling carried out?',
+        opts:['Workers hand-pick weak seedlings in the trays',
+              'Drone mapping counts dead palms in the main plot at month 4',
+              'The customer rejects seedlings at collection',
+              'Damaged seeds are removed while planting'], a:1 }
+    ]},
+    'Sales': { slug:'sales', page:'sales.html', quiz:[
+      { q:'A customer has purchased and paid online. What is the site-office admin’s first step?',
+        opts:['Issue the collection sticker',
+              'Issue the Delivery Order (DO)',
+              'Verify the online order and payment',
+              'Bring the customer to the plot'], a:2 },
+      { q:'What must the customer sign at the site office?',
+        opts:['The consent form','The L3 Form','The approval letter','The e-Invoice'], a:0 },
+      { q:'What does the admin issue for the customer to take to the plot for collection?',
+        opts:['An official receipt','A collection sticker','A delivery order','An order confirmation'], a:1 },
+      { q:'Which document is issued on handover — and may be more than one per order?',
+        opts:['Order Confirmation','Approval Letter','L3 Form','Delivery Order (DO)'], a:3 },
+      { q:'How many document types are filed together to make a complete order record?',
+        opts:['Five','Six','Seven','Nine'], a:2 }
+    ]},
+    'Troubleshoot & Cases': { slug:'troubleshoot', page:'troubleshoot.html', quiz:[
+      { q:'What is Carlos?',
+        opts:['MJM’s in-house app for logging and tracking field problems as cases',
+              'The nursery’s drone-mapping system',
+              'The monthly operations schedule',
+              'The customer ordering website'], a:0 },
+      { q:'Once a case is opened in Carlos, how long do you have to resolve and close it?',
+        opts:['24 hours','One month','One week','There is no deadline'], a:2 },
+      { q:'What is compulsory when opening (and when solving) a case?',
+        opts:['A voice note','Photo 1','A supervisor’s signature','A cost estimate'], a:1 },
+      { q:'What should the Coordinates setting be when opening or solving a case?',
+        opts:['Off, to save battery',
+              'Manual, typed in from a map',
+              'Automatic, so Carlos records your GPS position',
+              'It is optional'], a:2 },
+      { q:'You spot a problem in the field but aren’t sure it deserves a case. What do you do?',
+        opts:['Wait until the next monthly review',
+              'Open a case — if in doubt, open a case',
+              'Fix it quietly without logging it',
+              'Report it only if a manager asks'], a:1 }
+    ]},
+    'Admin Operation': { slug:'admin-operation', page:'admin-operation.html', quiz:[
+      { q:'How many reports does the site office admin compile for every batch?',
+        opts:['Three','Four','Six','Eight'], a:2 },
+      { q:'Which report is recorded first in a batch’s life?',
+        opts:['Transplanting Report','Seeds Planting Report','1st Culling Report','2nd Culling Report'], a:1 },
+      { q:'When is the 1st Culling Report recorded?',
+        opts:['Picking before transplant, at month 3–5',
+              'When the plot is sold',
+              'During seed planting',
+              'At month 4, after transplant'], a:0 },
+      { q:'How are the counts for the 2nd Culling Report obtained?',
+        opts:['Hand-counting by field workers',
+              'Customer feedback forms',
+              'Estimates from the monthly schedule',
+              'A drone count of dead palms at month 4'], a:3 },
+      { q:'When is the 3rd Culling Report recorded?',
+        opts:['During seed planting',
+              'When the plot is sold',
+              'Before transplanting',
+              'Every month'], a:1 }
+    ]},
+    'COPN — Code of Practice': { slug:'copn', page:'copn.html' },
+    'Team & Resource Management': { slug:'management', page:'management.html' },
+    'Vibe Coding Class': { slug:'vibe-coding', page:'vibe-coding.html' }
+  };
+
+  var sel=document.getElementById('courseSelect'),
+      status=document.getElementById('courseStatus'),
+      panel=document.getElementById('certPanel'),
+      certCard=document.getElementById('certCard'),
+      lead=document.getElementById('certLead'),
+      nameEl=document.getElementById('certName'),
+      courseEl=document.getElementById('certCourse'),
+      meta=document.getElementById('certMeta'),
+      dateEl=document.getElementById('certDate'),
+      scoreEl=document.getElementById('certScore'),
+      actions=document.getElementById('certActions'),
+      note=document.getElementById('certNote'),
+      quiz=document.getElementById('quiz'),
+      quizCount=document.getElementById('quizCount'),
+      quizCourse=document.getElementById('quizCourse'),
+      quizFill=document.getElementById('quizFill'),
+      qcard=document.getElementById('qcard');
+
+  var current=null, questions=[], qi=0, answers=[];
+
+  function store(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  function read(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function getCert(c){ var raw=read('mjm-cert-'+c.slug); if(!raw) return null;
+    try{ return JSON.parse(raw); }catch(e){ return null; } }
+  function isDone(c){ return read('mjm-done-'+c.slug)==='1'; }
+  function fmtDate(iso){
+    var d=iso?new Date(iso):new Date();
+    return d.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  }
+  function el(tag,cls,html){ var n=document.createElement(tag); if(cls)n.className=cls; if(html!=null)n.innerHTML=html; return n; }
+
+  function setStatus(kind,html){
+    if(!kind){ status.hidden=true; return; }
+    status.hidden=false; status.className='cstatus '+kind; status.innerHTML=html;
+  }
+
+  /* ---------- certificate card states ---------- */
+  function showPreview(name,course){
+    quiz.classList.remove('show'); certCard.style.display='';
+    lead.textContent='This certifies completion of the course';
+    nameEl.hidden=true; meta.hidden=true;
+    courseEl.textContent=name;
+    actions.innerHTML=''; note.innerHTML='';
+
+    if(course.quiz){
+      var start=el('button','btn','<i class="fa-solid fa-clipboard-check"></i> Start assessment');
+      start.addEventListener('click',function(){ startQuiz(name,course); });
+      actions.appendChild(start);
+      note.innerHTML='5 questions · answer at least <b>'+PASS_MARK+' of 5</b> correctly to earn your certificate.';
+      setStatus(isDone(course)?'ok':'todo', isDone(course)
+        ? '<i class="fa-solid fa-circle-check"></i> Course completed — you’re ready for the assessment'
+        : '<i class="fa-solid fa-book-open"></i> Tip: finish the course first — open it from Nursery Training');
+    }else{
+      note.innerHTML='The assessment for <b>'+name+'</b> is coming soon. Once it’s ready, pass it here to unlock your certificate.';
+      setStatus('todo','<i class="fa-solid fa-hourglass-half"></i> Assessment coming soon');
+    }
+  }
+
+  function showEarned(name,course,cert){
+    quiz.classList.remove('show'); certCard.style.display='';
+    lead.textContent='This certificate is proudly presented to';
+    nameEl.hidden=false; nameEl.textContent=cert.name;
+    courseEl.textContent='for completing '+name;
+    meta.hidden=false;
+    dateEl.innerHTML='<i class="fa-solid fa-calendar-check"></i> '+fmtDate(cert.date);
+    scoreEl.innerHTML='<i class="fa-solid fa-clipboard-check"></i> Score '+cert.score+' / '+cert.total;
+    actions.innerHTML=''; note.innerHTML='';
+
+    var print=el('button','btn','<i class="fa-solid fa-print"></i> Print certificate');
+    print.addEventListener('click',function(){ window.print(); });
+    actions.appendChild(print);
+    var retake=el('button','btn ghost','<i class="fa-solid fa-rotate-right"></i> Retake assessment');
+    retake.addEventListener('click',function(){ startQuiz(name,course); });
+    actions.appendChild(retake);
+    setStatus('ok','<i class="fa-solid fa-award"></i> Certified on '+fmtDate(cert.date));
+  }
+
+  /* ---------- quiz ---------- */
+  function startQuiz(name,course){
+    current={name:name,course:course};
+    questions=course.quiz; qi=0; answers=new Array(questions.length).fill(null);
+    certCard.style.display='none';
+    quiz.classList.add('show');
+    quizCourse.textContent=name;
+    setStatus('todo','<i class="fa-solid fa-pen"></i> Assessment in progress');
+    renderQuestion();
+  }
+
+  function renderQuestion(){
+    var q=questions[qi];
+    quizCount.textContent='Question '+(qi+1)+' of '+questions.length;
+    quizFill.style.width=((qi+1)/questions.length*100)+'%';
+    qcard.innerHTML='';
+    qcard.appendChild(el('div','qtext',q.q));
+
+    q.opts.forEach(function(opt,idx){
+      var b=el('button','opt'+(answers[qi]===idx?' sel':''));
+      b.type='button';
+      b.appendChild(el('span','odot'));
+      b.appendChild(el('span',null,opt));
+      b.addEventListener('click',function(){
+        answers[qi]=idx;
+        [].forEach.call(qcard.querySelectorAll('.opt'),function(o,i){ o.classList.toggle('sel',i===idx); });
+        nextBtn.disabled=false;
+      });
+      qcard.appendChild(b);
+    });
+
+    var nav=el('div','quiz-nav');
+    var backBtn=el('button','btn ghost','<i class="fa-solid fa-arrow-left"></i> Back');
+    backBtn.type='button';
+    if(qi===0){
+      backBtn.innerHTML='<i class="fa-solid fa-xmark"></i> Cancel';
+      backBtn.addEventListener('click',function(){ showFor(current.name,current.course); });
+    }else{
+      backBtn.addEventListener('click',function(){ qi--; renderQuestion(); });
+    }
+    var nextBtn=el('button','btn', qi===questions.length-1
+      ? 'Submit <i class="fa-solid fa-check"></i>'
+      : 'Next <i class="fa-solid fa-arrow-right"></i>');
+    nextBtn.type='button';
+    nextBtn.disabled=(answers[qi]==null);
+    nextBtn.addEventListener('click',function(){
+      if(answers[qi]==null) return;
+      if(qi<questions.length-1){ qi++; renderQuestion(); }
+      else grade();
+    });
+    nav.appendChild(backBtn); nav.appendChild(nextBtn);
+    qcard.appendChild(nav);
+  }
+
+  function grade(){
+    var score=0;
+    questions.forEach(function(q,i){ if(answers[i]===q.a) score++; });
+    var passed=score>=PASS_MARK;
+    quizCount.textContent='Result';
+    quizFill.style.width='100%';
+    qcard.innerHTML='';
+
+    var res=el('div','quiz-result');
+    res.appendChild(el('div','scorering '+(passed?'pass':'fail'),score+'/'+questions.length));
+    res.appendChild(el('h3',null,passed?'You passed!':'Not quite — try again'));
+    res.appendChild(el('p',null,passed
+      ? 'Well done. Enter your name below to claim your certificate of completion.'
+      : 'You need at least '+PASS_MARK+' of '+questions.length+' to pass. Review the course from Nursery Training, then retake the assessment.'));
+    qcard.appendChild(res);
+
+    if(passed){
+      var form=el('div','name-form');
+      form.appendChild(el('label',null,'Your full name (as it will appear on the certificate)'));
+      var input=document.createElement('input');
+      input.type='text'; input.maxLength=60; input.placeholder='e.g. Aisyah binti Rahman';
+      input.value=read('mjm-name')||'';
+      form.appendChild(input);
+      var err=el('div','err','');
+      form.appendChild(err);
+      qcard.appendChild(form);
+
+      var nav=el('div','quiz-nav');
+      nav.style.justifyContent='center';
+      var claim=el('button','btn','<i class="fa-solid fa-award"></i> Claim certificate');
+      claim.type='button';
+      claim.addEventListener('click',function(){
+        var name=input.value.trim();
+        if(!name){ err.textContent='Please enter your name.'; input.focus(); return; }
+        store('mjm-name',name);
+        store('mjm-done-'+current.course.slug,'1');
+        var cert={name:name,date:new Date().toISOString(),score:score,total:questions.length};
+        store('mjm-cert-'+current.course.slug,JSON.stringify(cert));
+        markSelectBadges();
+        showEarned(current.name,current.course,cert);
+      });
+      nav.appendChild(claim);
+      qcard.appendChild(nav);
+      input.focus();
+    }else{
+      var nav2=el('div','quiz-nav');
+      var back=el('button','btn ghost','<i class="fa-solid fa-arrow-left"></i> Back');
+      back.type='button';
+      back.addEventListener('click',function(){ showFor(current.name,current.course); });
+      var retry=el('button','btn','<i class="fa-solid fa-rotate-right"></i> Try again');
+      retry.type='button';
+      retry.addEventListener('click',function(){ startQuiz(current.name,current.course); });
+      nav2.appendChild(back); nav2.appendChild(retry);
+      qcard.appendChild(nav2);
+    }
+  }
+
+  /* ---------- entry ---------- */
+  function showFor(name,course){
+    var cert=getCert(course);
+    if(cert) showEarned(name,course,cert);
+    else showPreview(name,course);
+    panel.classList.add('show');
+  }
+
+  function markSelectBadges(){
+    [].forEach.call(sel.options,function(o){
+      if(!o.value) return;
+      var c=COURSES[o.value];
+      if(c&&getCert(c)&&o.text.indexOf('✓')===-1) o.text=o.text+' ✓';
+    });
+  }
+  markSelectBadges();
 
   sel.addEventListener('change',function(){
-    if(!sel.value){panel.classList.remove('show');return;}
-    courseEl.textContent=decode(sel.value);
-    note.innerHTML='';
-    panel.classList.add('show');
+    if(!sel.value){ panel.classList.remove('show'); setStatus(null); return; }
+    var course=COURSES[sel.value];
+    if(!course){ panel.classList.remove('show'); setStatus(null); return; }
+    showFor(sel.value,course);
     panel.scrollIntoView({behavior:'smooth',block:'nearest'});
-  });
-
-  startBtn.addEventListener('click',function(){
-    if(!sel.value){note.textContent='Please select a course first.';return;}
-    note.innerHTML='The assessment for <b>'+decode(sel.value)+'</b> is coming soon. '+
-      'Once it\'s ready, pass it here to unlock your certificate.';
   });
 })();
 </script>

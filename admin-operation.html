@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Operation — MJM Training Center</title>
 <meta name="description" content="Admin operation training — batch reports and records.">
+<meta name="theme-color" content="#1E3A20">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link rel="stylesheet" href="assets/style.css">
 </head>
@@ -58,8 +60,11 @@
   <div class="done-card">
     <div class="done-seal"><i class="fa-solid fa-circle-check"></i></div>
     <h2>Congratulations!</h2>
-    <p>You've finished the course.</p>
-    <a class="btn" href="nursery.html"><i class="fa-solid fa-arrow-left"></i> Back to main page</a>
+    <p>You've finished the course. Take the assessment to earn your certificate.</p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <a class="btn" href="certificate.html"><i class="fa-solid fa-award"></i> Get certified</a>
+      <a class="btn ghost" href="nursery.html"><i class="fa-solid fa-arrow-left"></i> Back to main page</a>
+    </div>
   </div>
 </div>
 
@@ -84,7 +89,7 @@
     if(scroll!==false) window.scrollTo({top:0,behavior:'smooth'});
   }
   prevBtn.addEventListener('click',function(){ if(cur>0) show(cur-1); });
-  nextBtn.addEventListener('click',function(){ if(cur<total-1) show(cur+1); else document.getElementById('doneModal').classList.add('show'); });
+  nextBtn.addEventListener('click',function(){ if(cur<total-1) show(cur+1); else{ try{localStorage.setItem('mjm-done-admin-operation','1');}catch(e){} document.getElementById('doneModal').classList.add('show'); } });
   document.addEventListener('keydown',function(e){
     if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
     if(e.key==='ArrowRight'){ if(cur<total-1) show(cur+1); }

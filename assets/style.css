@@ -450,6 +450,7 @@
 
   .cert-panel{margin-top:26px;display:none}
   .cert-panel.show{display:block;animation:pagein .4s ease}
+  .cert-pick .cstatus{margin-top:14px}
   .certificate{position:relative;background:linear-gradient(160deg,#fffdf6,#f6efdd);border:2px solid #e3cf9e;
     border-radius:18px;padding:38px 32px;text-align:center;box-shadow:0 10px 30px rgba(120,90,20,.12)}
   .certificate::before{content:"";position:absolute;inset:10px;border:1px solid #e3cf9e;border-radius:12px;pointer-events:none}
@@ -461,3 +462,72 @@
   .certificate .ccourse{font-family:var(--serif);font-weight:700;color:var(--earth-d);font-size:20px;margin-bottom:18px}
   .cert-note{margin-top:18px;font-size:13.5px;color:var(--mute);min-height:20px}
   .cert-note b{color:var(--forest)}
+
+  /* ---------- assessment quiz ---------- */
+  .quiz{display:none;margin-top:26px}
+  .quiz.show{display:block;animation:pagein .4s ease}
+  .quiz-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+  .quiz-count{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--earth)}
+  .quiz-course{font-family:var(--serif);font-weight:700;color:var(--forest);font-size:15px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .quiz-bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-bottom:20px}
+  .quiz-bar .qfill{height:100%;background:var(--leaf);width:0;transition:width .3s ease}
+  .qcard{background:var(--card);border-radius:16px;padding:26px;box-shadow:0 3px 10px rgba(27,42,23,.07)}
+  .qtext{font-family:var(--serif);font-weight:700;font-size:20px;color:var(--forest);margin-bottom:18px}
+  .opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:#fff;
+    border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px;cursor:pointer;
+    font-family:var(--sans);font-size:14.5px;color:var(--ink);transition:border-color .15s,background .15s}
+  .opt:hover{border-color:var(--leaf)}
+  .opt .odot{flex:none;width:20px;height:20px;border-radius:50%;border:2px solid #c9d2ba;
+    display:grid;place-items:center;transition:border-color .15s}
+  .opt .odot::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--green);
+    transform:scale(0);transition:transform .15s}
+  .opt.sel{border-color:var(--green);background:#eef4e2}
+  .opt.sel .odot{border-color:var(--green)}
+  .opt.sel .odot::after{transform:scale(1)}
+  .quiz-nav{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
+  .quiz-nav .btn{margin-top:0}
+  .quiz-result{text-align:center;padding:10px 0 4px}
+  .scorering{width:110px;height:110px;border-radius:50%;margin:0 auto 16px;display:grid;place-items:center;
+    font-family:var(--serif);font-weight:700;font-size:30px;color:#fff}
+  .scorering.pass{background:linear-gradient(135deg,var(--leaf),var(--green))}
+  .scorering.fail{background:linear-gradient(135deg,#c98a5a,#9C5E2C)}
+  .quiz-result h3{font-family:var(--serif);font-size:24px;color:var(--forest);margin-bottom:8px}
+  .quiz-result p{color:var(--mute);font-size:14.5px;max-width:46ch;margin:0 auto}
+  .name-form{max-width:380px;margin:22px auto 0;text-align:left}
+  .name-form label{display:block;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--earth);margin-bottom:8px}
+  .name-form input{width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:10px;
+    font-size:16px;font-family:var(--sans)}
+  .name-form input:focus{outline:none;border-color:var(--leaf)}
+  .name-form .err{color:#b23b2e;font-size:13px;font-weight:600;min-height:18px;margin-top:6px}
+
+  /* earned certificate details */
+  .certificate .cname{font-family:var(--serif);font-weight:700;font-size:clamp(24px,4.5vw,32px);color:var(--forest);
+    border-bottom:2px solid #e3cf9e;display:inline-block;padding:0 22px 6px;margin:6px 0 14px;min-width:55%}
+  .certificate .cmeta{display:flex;justify-content:center;gap:26px;flex-wrap:wrap;color:#a07c2a;
+    font-size:13px;font-weight:600;margin-top:16px}
+  .certificate .cmeta i{margin-right:6px}
+  .cert-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+  .cert-actions .btn{margin-top:22px}
+  .btn.ghost{background:transparent;color:var(--forest);border:1.5px solid #d8ceb2}
+  .btn.ghost:hover{background:rgba(255,255,255,.6);color:var(--forest)}
+  .cstatus{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;
+    border-radius:20px;padding:7px 15px}
+  .cstatus.ok{background:#dceac8;color:var(--green)}
+  .cstatus.todo{background:#f0e3d2;color:var(--earth-d)}
+
+  /* completed pill in pathway matrix */
+  .done-pill{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;letter-spacing:.05em;
+    text-transform:uppercase;background:#dceac8;color:var(--green);border-radius:12px;padding:3px 9px;
+    margin-left:10px;vertical-align:1px}
+  .done-pill.cert{background:#f5e6c4;color:#8a6a1f}
+
+  /* print: certificate only */
+  @media print{
+    body{background:#fff}
+    .topbar,.hero,footer,.cert-pick>label,.cert-select,.quiz,.cert-actions,.cert-note,.cstatus{display:none!important}
+    .slide{border:0;padding:10px 0}
+    .cert-panel{margin-top:0}
+    .certificate{box-shadow:none;page-break-inside:avoid}
+  }
