@@ -114,20 +114,24 @@
 
 <script>
 (function(){
-  var map={'operation.html':'operation','troubleshoot.html':'troubleshoot','admin-operation.html':'admin-operation',
-           'copn.html':'copn','sales.html':'sales','management.html':'management'};
+  var map={'operation.html':{slug:'operation',pages:9},'troubleshoot.html':{slug:'troubleshoot',pages:4},
+           'admin-operation.html':{slug:'admin-operation',pages:1},'copn.html':{slug:'copn',pages:1},
+           'sales.html':{slug:'sales',pages:2},'management.html':{slug:'management',pages:1}};
   try{
     Object.keys(map).forEach(function(href){
-      var slug=map[href];
-      var cert=localStorage.getItem('mjm-cert-'+slug);
-      var done=localStorage.getItem('mjm-done-'+slug)==='1';
-      if(!cert&&!done) return;
+      var slug=map[href].slug;
+      var read=0;
+      try{ read=JSON.parse(localStorage.getItem('mjm-read-'+slug)||'[]').length; }catch(e){}
+      var total=parseInt(localStorage.getItem('mjm-pages-'+slug)||'0',10)||map[href].pages;
+      var done=read>=total||localStorage.getItem('mjm-done-'+slug)==='1';
+      if(!done&&read===0) return;
       var link=document.querySelector('.matrix a[href="'+href+'"]');
       if(!link) return;
       var cell=link.closest('tr').querySelector('.skill');
       var pill=document.createElement('span');
-      pill.className='done-pill'+(cert?' cert':'');
-      pill.innerHTML=cert?'<i class="fa-solid fa-award"></i> Certified':'<i class="fa-solid fa-check"></i> Completed';
+      pill.className='done-pill'+(done?'':' part');
+      pill.innerHTML=done?'<i class="fa-solid fa-check"></i> All slides read'
+                         :'<i class="fa-solid fa-book-open"></i> Read '+Math.min(read,total)+'/'+total;
       cell.appendChild(pill);
     });
   }catch(e){}

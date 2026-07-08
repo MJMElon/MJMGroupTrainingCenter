@@ -49,10 +49,23 @@
   var stepEl=document.getElementById('pstep'),nameEl=document.getElementById('pname');
   var prevBtn=document.getElementById('prevBtn'),nextBtn=document.getElementById('nextBtn');
   var total=steps.length, cur=0;
+  var SLUG='copn';
+  var seen={};
+  try{JSON.parse(localStorage.getItem('mjm-read-'+SLUG)||'[]').forEach(function(n){seen[n]=1});}catch(e){}
+  function record(i){
+    seen[i]=1;
+    var arr=Object.keys(seen).map(Number);
+    try{
+      localStorage.setItem('mjm-read-'+SLUG,JSON.stringify(arr));
+      localStorage.setItem('mjm-pages-'+SLUG,String(total));
+      if(arr.length>=total) localStorage.setItem('mjm-done-'+SLUG,'1');
+    }catch(e){}
+  }
   [].forEach.call(document.querySelectorAll('.reveal'),function(el){el.classList.add('in');});
   function nameOf(sec){var t=sec.querySelector('.slide-title');return t?t.textContent.trim():'';}
   function show(i,scroll){
     cur=Math.max(0,Math.min(total-1,i));
+    record(cur);
     steps.forEach(function(s,idx){s.classList.toggle('active',idx===cur);});
     fill.style.width=((cur+1)/total*100)+'%';
     stepEl.textContent='Page '+(cur+1)+' of '+total;

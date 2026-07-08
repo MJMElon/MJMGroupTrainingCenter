@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Earn a Certificate — MJM Training Center</title>
-<meta name="description" content="Select a course and take the assessment to earn your MJM certificate of completion.">
+<meta name="description" content="Role certification — read all course slides and log the required practical experience to earn your certificate.">
 <meta name="theme-color" content="#1E3A20">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -24,58 +24,50 @@
   <div class="hero-in">
     <div class="seed"><i class="fa-solid fa-award"></i></div>
     <div class="eyebrow">Certification</div>
-    <h1>Earn a Certificate</h1>
+    <h1>Role Certification</h1>
     <div class="rule"></div>
-    <p class="lede">Choose the course you've completed, then pass its assessment to earn your certificate of completion.</p>
+    <p class="lede">Each role has two kinds of requirements: read every slide of its training courses, and build up real practical experience in your logbook. Complete both to claim your certificate.</p>
   </div>
 </header>
 
 <section class="slide"><div class="wrap">
   <div class="cert-pick">
-    <label for="courseSelect">Select a course</label>
+    <label for="roleSelect">Select a role</label>
     <div class="cert-select">
-      <select id="courseSelect" aria-label="Select a course">
-        <option value="" selected disabled>— Choose a course to get certified in —</option>
-        <optgroup label="Nursery Training">
-          <option value="Nursery Operation">Nursery Operation</option>
-          <option value="Sales">Sales</option>
-          <option value="Troubleshoot &amp; Cases">Troubleshoot &amp; Cases</option>
-          <option value="Admin Operation">Admin Operation</option>
-          <option value="COPN — Code of Practice">COPN — Code of Practice</option>
-          <option value="Team &amp; Resource Management">Team &amp; Resource Management</option>
-        </optgroup>
-        <optgroup label="Vibe Coding">
-          <option value="Vibe Coding Class">Vibe Coding Class</option>
-        </optgroup>
+      <select id="roleSelect" aria-label="Select a role">
+        <option value="" selected disabled>— Choose the role you're training for —</option>
+        <option value="Assistant Field Conductor">Assistant Field Conductor</option>
+        <option value="Field Conductor">Field Conductor</option>
+        <option value="Administrator">Administrator</option>
+        <option value="Auditor">Auditor</option>
+        <option value="Nursery Manager">Nursery Manager</option>
       </select>
       <i class="fa-solid fa-chevron-down chev"></i>
     </div>
-    <span class="cstatus" id="courseStatus" hidden></span>
+    <span class="cstatus" id="roleStatus" hidden></span>
 
     <div class="cert-panel" id="certPanel">
       <div class="certificate" id="certCard">
         <div class="seal"><i class="fa-solid fa-award"></i></div>
-        <div class="ctag">Certificate of Completion</div>
+        <div class="ctag">Certificate of Qualification</div>
         <h3>MJM Training Center</h3>
-        <p class="cfor" id="certLead">This certifies completion of the course</p>
+        <p class="cfor" id="certLead">This certifies qualification for the role of</p>
         <div class="cname" id="certName" hidden>—</div>
-        <div class="ccourse" id="certCourse">—</div>
+        <div class="ccourse" id="certRole">—</div>
         <div class="cmeta" id="certMeta" hidden>
-          <span id="certDate"><i class="fa-solid fa-calendar-check"></i></span>
-          <span id="certScore"><i class="fa-solid fa-clipboard-check"></i></span>
+          <span id="certDate"></span>
+          <span id="certReqs"></span>
+        </div>
+        <div class="name-form" id="claimBox" hidden>
+          <label for="nameInput">Your full name (as it will appear on the certificate)</label>
+          <input type="text" id="nameInput" maxlength="60" placeholder="e.g. Aisyah binti Rahman">
+          <div class="err" id="nameErr"></div>
         </div>
         <div class="cert-actions" id="certActions"></div>
         <div class="cert-note" id="certNote"></div>
       </div>
 
-      <div class="quiz" id="quiz">
-        <div class="quiz-top">
-          <div class="quiz-count" id="quizCount"></div>
-          <div class="quiz-course" id="quizCourse"></div>
-        </div>
-        <div class="quiz-bar"><div class="qfill" id="quizFill"></div></div>
-        <div class="qcard" id="qcard"></div>
-      </div>
+      <div class="reqs" id="reqs"></div>
     </div>
   </div>
 </div></section>
@@ -86,305 +78,230 @@
 
 <script>
 (function(){
-  var PASS_MARK = 4; // out of 5
-
-  var COURSES = {
-    'Nursery Operation': { slug:'operation', page:'operation.html', quiz:[
-      { q:'What is the correct order of the three nursery stages?',
-        opts:['Pre-Nursery → Seed Planting → Main Nursery',
-              'Seed Planting → Pre-Nursery → Main Nursery',
-              'Seed Planting → Main Nursery → Pre-Nursery',
-              'Main Nursery → Pre-Nursery → Seed Planting'], a:1 },
-      { q:'A germinated seed has two similar-looking sprouts. Which one is the root, and which way should it point?',
-        opts:['The shorter sprout — point it down',
-              'The longer sprout — point it up',
-              'The longer sprout — point it down',
-              'Either sprout — orientation doesn’t matter'], a:2 },
-      { q:'In the main nursery, how much water does each seedling get?',
-        opts:['1.5 L per seedling, every day',
-              '10 minutes per session, once a week',
-              '5 L per seedling, once a month',
-              '0.5 L per seedling, twice a month'], a:0 },
-      { q:'When lining up polybags for transplanting, what spacing is used between them?',
-        opts:['1 ft × 1 ft','2 ft × 5 ft','5 ft × 5 ft','3 ft × 3 ft'], a:3 },
-      { q:'How is the 2nd culling carried out?',
-        opts:['Workers hand-pick weak seedlings in the trays',
-              'Drone mapping counts dead palms in the main plot at month 4',
-              'The customer rejects seedlings at collection',
-              'Damaged seeds are removed while planting'], a:1 }
-    ]},
-    'Sales': { slug:'sales', page:'sales.html', quiz:[
-      { q:'A customer has purchased and paid online. What is the site-office admin’s first step?',
-        opts:['Issue the collection sticker',
-              'Issue the Delivery Order (DO)',
-              'Verify the online order and payment',
-              'Bring the customer to the plot'], a:2 },
-      { q:'What must the customer sign at the site office?',
-        opts:['The consent form','The L3 Form','The approval letter','The e-Invoice'], a:0 },
-      { q:'What does the admin issue for the customer to take to the plot for collection?',
-        opts:['An official receipt','A collection sticker','A delivery order','An order confirmation'], a:1 },
-      { q:'Which document is issued on handover — and may be more than one per order?',
-        opts:['Order Confirmation','Approval Letter','L3 Form','Delivery Order (DO)'], a:3 },
-      { q:'How many document types are filed together to make a complete order record?',
-        opts:['Five','Six','Seven','Nine'], a:2 }
-    ]},
-    'Troubleshoot & Cases': { slug:'troubleshoot', page:'troubleshoot.html', quiz:[
-      { q:'What is Carlos?',
-        opts:['MJM’s in-house app for logging and tracking field problems as cases',
-              'The nursery’s drone-mapping system',
-              'The monthly operations schedule',
-              'The customer ordering website'], a:0 },
-      { q:'Once a case is opened in Carlos, how long do you have to resolve and close it?',
-        opts:['24 hours','One month','One week','There is no deadline'], a:2 },
-      { q:'What is compulsory when opening (and when solving) a case?',
-        opts:['A voice note','Photo 1','A supervisor’s signature','A cost estimate'], a:1 },
-      { q:'What should the Coordinates setting be when opening or solving a case?',
-        opts:['Off, to save battery',
-              'Manual, typed in from a map',
-              'Automatic, so Carlos records your GPS position',
-              'It is optional'], a:2 },
-      { q:'You spot a problem in the field but aren’t sure it deserves a case. What do you do?',
-        opts:['Wait until the next monthly review',
-              'Open a case — if in doubt, open a case',
-              'Fix it quietly without logging it',
-              'Report it only if a manager asks'], a:1 }
-    ]},
-    'Admin Operation': { slug:'admin-operation', page:'admin-operation.html', quiz:[
-      { q:'How many reports does the site office admin compile for every batch?',
-        opts:['Three','Four','Six','Eight'], a:2 },
-      { q:'Which report is recorded first in a batch’s life?',
-        opts:['Transplanting Report','Seeds Planting Report','1st Culling Report','2nd Culling Report'], a:1 },
-      { q:'When is the 1st Culling Report recorded?',
-        opts:['Picking before transplant, at month 3–5',
-              'When the plot is sold',
-              'During seed planting',
-              'At month 4, after transplant'], a:0 },
-      { q:'How are the counts for the 2nd Culling Report obtained?',
-        opts:['Hand-counting by field workers',
-              'Customer feedback forms',
-              'Estimates from the monthly schedule',
-              'A drone count of dead palms at month 4'], a:3 },
-      { q:'When is the 3rd Culling Report recorded?',
-        opts:['During seed planting',
-              'When the plot is sold',
-              'Before transplanting',
-              'Every month'], a:1 }
-    ]},
-    'COPN — Code of Practice': { slug:'copn', page:'copn.html' },
-    'Team & Resource Management': { slug:'management', page:'management.html' },
-    'Vibe Coding Class': { slug:'vibe-coding', page:'vibe-coding.html' }
+  /* ------- courses (slide counts) ------- */
+  var COURSES={
+    'operation':       {name:'Nursery Operation',            page:'operation.html',       pages:9},
+    'troubleshoot':    {name:'Troubleshoot & Cases',          page:'troubleshoot.html',    pages:4},
+    'admin-operation': {name:'Admin Operation',               page:'admin-operation.html', pages:1},
+    'copn':            {name:'COPN — Code of Practice',       page:'copn.html',            pages:1},
+    'sales':           {name:'Sales',                         page:'sales.html',           pages:2},
+    'management':      {name:'Team & Resource Management',    page:'management.html',      pages:1}
   };
 
-  var sel=document.getElementById('courseSelect'),
-      status=document.getElementById('courseStatus'),
+  /* ------- practical activities (shared with logbook.html) ------- */
+  var ACTIVITIES={
+    'seed-planting': {name:'Seeds Planting',          icon:'fa-seedling'},
+    'seed-culling':  {name:'Seed-Damage Culling',     icon:'fa-filter'},
+    'watering':      {name:'Watering Sessions',       icon:'fa-droplet'},
+    'manuring':      {name:'Manuring Rounds',         icon:'fa-flask'},
+    'weeding':       {name:'Weeding Rounds',          icon:'fa-scissors'},
+    'spraying':      {name:'Pest & Disease Sprays',   icon:'fa-bug'},
+    'interrow':      {name:'Inter-Row Sprays',        icon:'fa-spray-can'},
+    'transplanting': {name:'Seedlings Transplanted',  icon:'fa-right-left'},
+    'culling':       {name:'Culling Checks',          icon:'fa-magnifying-glass'},
+    'case-open':     {name:'Carlos Cases Opened',     icon:'fa-circle-plus'},
+    'case-solve':    {name:'Carlos Cases Resolved',   icon:'fa-circle-check'},
+    'order':         {name:'Sales Orders Processed',  icon:'fa-cart-shopping'},
+    'report':        {name:'Batch Reports Filed',     icon:'fa-file-lines'},
+    'collection':    {name:'Collections Handled',     icon:'fa-truck-ramp-box'}
+  };
+
+  /* ------- role requirements: courses to read + practical targets -------
+     Adjust the target numbers here as needed. */
+  var ROLES={
+    'Assistant Field Conductor': { slug:'afc',
+      courses:['operation'],
+      practical:{ 'seed-planting':50, 'watering':30, 'weeding':10, 'manuring':10 } },
+    'Field Conductor': { slug:'fc',
+      courses:['operation','troubleshoot'],
+      practical:{ 'seed-planting':100, 'transplanting':50, 'culling':20, 'spraying':20, 'case-open':10, 'case-solve':10 } },
+    'Administrator': { slug:'admin',
+      courses:['operation','admin-operation','sales'],
+      practical:{ 'order':20, 'report':30, 'collection':10 } },
+    'Auditor': { slug:'auditor',
+      courses:['operation','troubleshoot','admin-operation','copn'],
+      practical:{ 'culling':30, 'case-solve':20, 'report':20 } },
+    'Nursery Manager': { slug:'manager',
+      courses:['operation','troubleshoot','admin-operation','copn','sales','management'],
+      practical:{ 'seed-planting':100, 'transplanting':50, 'order':30, 'report':30, 'case-solve':20 } }
+  };
+
+  var sel=document.getElementById('roleSelect'),
+      status=document.getElementById('roleStatus'),
       panel=document.getElementById('certPanel'),
-      certCard=document.getElementById('certCard'),
       lead=document.getElementById('certLead'),
       nameEl=document.getElementById('certName'),
-      courseEl=document.getElementById('certCourse'),
+      roleEl=document.getElementById('certRole'),
       meta=document.getElementById('certMeta'),
       dateEl=document.getElementById('certDate'),
-      scoreEl=document.getElementById('certScore'),
+      reqsMeta=document.getElementById('certReqs'),
+      claimBox=document.getElementById('claimBox'),
+      nameInput=document.getElementById('nameInput'),
+      nameErr=document.getElementById('nameErr'),
       actions=document.getElementById('certActions'),
       note=document.getElementById('certNote'),
-      quiz=document.getElementById('quiz'),
-      quizCount=document.getElementById('quizCount'),
-      quizCourse=document.getElementById('quizCourse'),
-      quizFill=document.getElementById('quizFill'),
-      qcard=document.getElementById('qcard');
+      reqsEl=document.getElementById('reqs');
 
-  var current=null, questions=[], qi=0, answers=[];
-
-  function store(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
   function read(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
-  function getCert(c){ var raw=read('mjm-cert-'+c.slug); if(!raw) return null;
-    try{ return JSON.parse(raw); }catch(e){ return null; } }
-  function isDone(c){ return read('mjm-done-'+c.slug)==='1'; }
+  function store(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  function readCount(slug){
+    try{ return JSON.parse(read('mjm-read-'+slug)||'[]').length; }catch(e){ return 0; }
+  }
+  function pageTotal(slug){
+    var stored=parseInt(read('mjm-pages-'+slug)||'0',10);
+    return stored>0?stored:COURSES[slug].pages;
+  }
+  function logCounts(){
+    try{ return JSON.parse(read('mjm-log')||'{}'); }catch(e){ return {}; }
+  }
+  function getRoleCert(role){
+    var raw=read('mjm-rolecert-'+role.slug); if(!raw) return null;
+    try{ return JSON.parse(raw); }catch(e){ return null; }
+  }
   function fmtDate(iso){
     var d=iso?new Date(iso):new Date();
     return d.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
   }
   function el(tag,cls,html){ var n=document.createElement(tag); if(cls)n.className=cls; if(html!=null)n.innerHTML=html; return n; }
-
   function setStatus(kind,html){
     if(!kind){ status.hidden=true; return; }
     status.hidden=false; status.className='cstatus '+kind; status.innerHTML=html;
   }
 
-  /* ---------- certificate card states ---------- */
-  function showPreview(name,course){
-    quiz.classList.remove('show'); certCard.style.display='';
-    lead.textContent='This certifies completion of the course';
-    nameEl.hidden=true; meta.hidden=true;
-    courseEl.textContent=name;
-    actions.innerHTML=''; note.innerHTML='';
+  /* ------- compute requirement state for a role ------- */
+  function assess(role){
+    var log=logCounts();
+    var reading=role.courses.map(function(slug){
+      var got=readCount(slug), total=pageTotal(slug);
+      return { slug:slug, name:COURSES[slug].name, page:COURSES[slug].page,
+               got:Math.min(got,total), total:total, met:got>=total };
+    });
+    var practical=Object.keys(role.practical).map(function(key){
+      var target=role.practical[key], got=log[key]||0;
+      return { key:key, name:ACTIVITIES[key].name, icon:ACTIVITIES[key].icon,
+               got:got, target:target, met:got>=target };
+    });
+    var met=reading.filter(function(r){return r.met}).length +
+            practical.filter(function(p){return p.met}).length;
+    return { reading:reading, practical:practical,
+             met:met, total:reading.length+practical.length,
+             allMet:met===reading.length+practical.length };
+  }
 
-    if(course.quiz){
-      var start=el('button','btn','<i class="fa-solid fa-clipboard-check"></i> Start assessment');
-      start.addEventListener('click',function(){ startQuiz(name,course); });
-      actions.appendChild(start);
-      note.innerHTML='5 questions · answer at least <b>'+PASS_MARK+' of 5</b> correctly to earn your certificate.';
-      setStatus(isDone(course)?'ok':'todo', isDone(course)
-        ? '<i class="fa-solid fa-circle-check"></i> Course completed — you’re ready for the assessment'
-        : '<i class="fa-solid fa-book-open"></i> Tip: finish the course first — open it from Nursery Training');
+  function reqRow(icon,nameHtml,countText,got,target,met){
+    var row=el('div','req'+(met?' met':''));
+    row.appendChild(el('div','icon-badge','<i class="fa-solid '+icon+'"></i>'));
+    var body=el('div','req-body');
+    body.appendChild(el('div','req-name',nameHtml));
+    body.appendChild(el('div','req-count',countText));
+    var bar=el('div','bar');
+    var pct=target>0?Math.min(100,got/target*100):0;
+    var fill=el('span','fill'); fill.style.width=pct+'%';
+    bar.appendChild(fill); body.appendChild(bar);
+    row.appendChild(body);
+    row.appendChild(el('div','req-state','<i class="fa-solid '+(met?'fa-circle-check':'fa-circle')+'"></i>'));
+    return row;
+  }
+
+  function renderReqs(state){
+    reqsEl.innerHTML='';
+
+    var g1=el('div','req-group');
+    g1.appendChild(el('h3',null,'<i class="fa-solid fa-book-open" style="color:var(--green);margin-right:8px"></i>Course Reading'));
+    g1.appendChild(el('div','rg-sub','Open each course and read every slide — your reading is recorded automatically.'));
+    state.reading.forEach(function(r){
+      g1.appendChild(reqRow('fa-book-open',
+        '<a href="'+r.page+'">'+r.name+'</a>',
+        r.met?'All '+r.total+' slides read':r.got+' of '+r.total+' slides read',
+        r.got,r.total,r.met));
+    });
+    reqsEl.appendChild(g1);
+
+    var g2=el('div','req-group');
+    g2.appendChild(el('h3',null,'<i class="fa-solid fa-list-check" style="color:var(--green);margin-right:8px"></i>Practical Experience'));
+    g2.appendChild(el('div','rg-sub','Log each task in the <a href="logbook.html">Practical Logbook</a> every time you do it on site.'));
+    state.practical.forEach(function(p){
+      g2.appendChild(reqRow(p.icon,p.name,
+        p.got+' of '+p.target+' logged'+(p.met?' — done':''),
+        p.got,p.target,p.met));
+    });
+    reqsEl.appendChild(g2);
+  }
+
+  /* ------- card states ------- */
+  function showProgress(roleName,role,state){
+    lead.textContent='This certifies qualification for the role of';
+    nameEl.hidden=true; meta.hidden=true; claimBox.hidden=true;
+    roleEl.textContent=roleName;
+    actions.innerHTML=''; note.innerHTML='';
+    reqsEl.style.display='';
+
+    if(state.allMet){
+      claimBox.hidden=false;
+      nameInput.value=read('mjm-name')||'';
+      nameErr.textContent='';
+      var claim=el('button','btn','<i class="fa-solid fa-award"></i> Claim certificate');
+      claim.addEventListener('click',function(){
+        var name=nameInput.value.trim();
+        if(!name){ nameErr.textContent='Please enter your name.'; nameInput.focus(); return; }
+        store('mjm-name',name);
+        var cert={name:name,date:new Date().toISOString(),met:state.met,total:state.total};
+        store('mjm-rolecert-'+role.slug,JSON.stringify(cert));
+        markSelectBadges();
+        showEarned(roleName,role,cert);
+      });
+      actions.appendChild(claim);
+      setStatus('ok','<i class="fa-solid fa-circle-check"></i> All '+state.total+' requirements met — claim your certificate');
     }else{
-      note.innerHTML='The assessment for <b>'+name+'</b> is coming soon. Once it’s ready, pass it here to unlock your certificate.';
-      setStatus('todo','<i class="fa-solid fa-hourglass-half"></i> Assessment coming soon');
+      note.innerHTML='Complete the reading and practical requirements below, then come back to claim your certificate.';
+      setStatus('todo','<i class="fa-solid fa-bars-progress"></i> '+state.met+' of '+state.total+' requirements met');
     }
   }
 
-  function showEarned(name,course,cert){
-    quiz.classList.remove('show'); certCard.style.display='';
+  function showEarned(roleName,role,cert){
     lead.textContent='This certificate is proudly presented to';
     nameEl.hidden=false; nameEl.textContent=cert.name;
-    courseEl.textContent='for completing '+name;
-    meta.hidden=false;
+    roleEl.textContent='for qualifying as '+roleName;
+    meta.hidden=false; claimBox.hidden=true;
     dateEl.innerHTML='<i class="fa-solid fa-calendar-check"></i> '+fmtDate(cert.date);
-    scoreEl.innerHTML='<i class="fa-solid fa-clipboard-check"></i> Score '+cert.score+' / '+cert.total;
+    reqsMeta.innerHTML='<i class="fa-solid fa-list-check"></i> All requirements completed';
     actions.innerHTML=''; note.innerHTML='';
+    reqsEl.style.display='none';
 
     var print=el('button','btn','<i class="fa-solid fa-print"></i> Print certificate');
     print.addEventListener('click',function(){ window.print(); });
     actions.appendChild(print);
-    var retake=el('button','btn ghost','<i class="fa-solid fa-rotate-right"></i> Retake assessment');
-    retake.addEventListener('click',function(){ startQuiz(name,course); });
-    actions.appendChild(retake);
+    var view=el('button','btn ghost','<i class="fa-solid fa-bars-progress"></i> View requirements');
+    view.addEventListener('click',function(){
+      reqsEl.style.display=(reqsEl.style.display==='none')?'':'none';
+    });
+    actions.appendChild(view);
     setStatus('ok','<i class="fa-solid fa-award"></i> Certified on '+fmtDate(cert.date));
   }
 
-  /* ---------- quiz ---------- */
-  function startQuiz(name,course){
-    current={name:name,course:course};
-    questions=course.quiz; qi=0; answers=new Array(questions.length).fill(null);
-    certCard.style.display='none';
-    quiz.classList.add('show');
-    quizCourse.textContent=name;
-    setStatus('todo','<i class="fa-solid fa-pen"></i> Assessment in progress');
-    renderQuestion();
-  }
-
-  function renderQuestion(){
-    var q=questions[qi];
-    quizCount.textContent='Question '+(qi+1)+' of '+questions.length;
-    quizFill.style.width=((qi+1)/questions.length*100)+'%';
-    qcard.innerHTML='';
-    qcard.appendChild(el('div','qtext',q.q));
-
-    q.opts.forEach(function(opt,idx){
-      var b=el('button','opt'+(answers[qi]===idx?' sel':''));
-      b.type='button';
-      b.appendChild(el('span','odot'));
-      b.appendChild(el('span',null,opt));
-      b.addEventListener('click',function(){
-        answers[qi]=idx;
-        [].forEach.call(qcard.querySelectorAll('.opt'),function(o,i){ o.classList.toggle('sel',i===idx); });
-        nextBtn.disabled=false;
-      });
-      qcard.appendChild(b);
-    });
-
-    var nav=el('div','quiz-nav');
-    var backBtn=el('button','btn ghost','<i class="fa-solid fa-arrow-left"></i> Back');
-    backBtn.type='button';
-    if(qi===0){
-      backBtn.innerHTML='<i class="fa-solid fa-xmark"></i> Cancel';
-      backBtn.addEventListener('click',function(){ showFor(current.name,current.course); });
-    }else{
-      backBtn.addEventListener('click',function(){ qi--; renderQuestion(); });
-    }
-    var nextBtn=el('button','btn', qi===questions.length-1
-      ? 'Submit <i class="fa-solid fa-check"></i>'
-      : 'Next <i class="fa-solid fa-arrow-right"></i>');
-    nextBtn.type='button';
-    nextBtn.disabled=(answers[qi]==null);
-    nextBtn.addEventListener('click',function(){
-      if(answers[qi]==null) return;
-      if(qi<questions.length-1){ qi++; renderQuestion(); }
-      else grade();
-    });
-    nav.appendChild(backBtn); nav.appendChild(nextBtn);
-    qcard.appendChild(nav);
-  }
-
-  function grade(){
-    var score=0;
-    questions.forEach(function(q,i){ if(answers[i]===q.a) score++; });
-    var passed=score>=PASS_MARK;
-    quizCount.textContent='Result';
-    quizFill.style.width='100%';
-    qcard.innerHTML='';
-
-    var res=el('div','quiz-result');
-    res.appendChild(el('div','scorering '+(passed?'pass':'fail'),score+'/'+questions.length));
-    res.appendChild(el('h3',null,passed?'You passed!':'Not quite — try again'));
-    res.appendChild(el('p',null,passed
-      ? 'Well done. Enter your name below to claim your certificate of completion.'
-      : 'You need at least '+PASS_MARK+' of '+questions.length+' to pass. Review the course from Nursery Training, then retake the assessment.'));
-    qcard.appendChild(res);
-
-    if(passed){
-      var form=el('div','name-form');
-      form.appendChild(el('label',null,'Your full name (as it will appear on the certificate)'));
-      var input=document.createElement('input');
-      input.type='text'; input.maxLength=60; input.placeholder='e.g. Aisyah binti Rahman';
-      input.value=read('mjm-name')||'';
-      form.appendChild(input);
-      var err=el('div','err','');
-      form.appendChild(err);
-      qcard.appendChild(form);
-
-      var nav=el('div','quiz-nav');
-      nav.style.justifyContent='center';
-      var claim=el('button','btn','<i class="fa-solid fa-award"></i> Claim certificate');
-      claim.type='button';
-      claim.addEventListener('click',function(){
-        var name=input.value.trim();
-        if(!name){ err.textContent='Please enter your name.'; input.focus(); return; }
-        store('mjm-name',name);
-        store('mjm-done-'+current.course.slug,'1');
-        var cert={name:name,date:new Date().toISOString(),score:score,total:questions.length};
-        store('mjm-cert-'+current.course.slug,JSON.stringify(cert));
-        markSelectBadges();
-        showEarned(current.name,current.course,cert);
-      });
-      nav.appendChild(claim);
-      qcard.appendChild(nav);
-      input.focus();
-    }else{
-      var nav2=el('div','quiz-nav');
-      var back=el('button','btn ghost','<i class="fa-solid fa-arrow-left"></i> Back');
-      back.type='button';
-      back.addEventListener('click',function(){ showFor(current.name,current.course); });
-      var retry=el('button','btn','<i class="fa-solid fa-rotate-right"></i> Try again');
-      retry.type='button';
-      retry.addEventListener('click',function(){ startQuiz(current.name,current.course); });
-      nav2.appendChild(back); nav2.appendChild(retry);
-      qcard.appendChild(nav2);
-    }
-  }
-
-  /* ---------- entry ---------- */
-  function showFor(name,course){
-    var cert=getCert(course);
-    if(cert) showEarned(name,course,cert);
-    else showPreview(name,course);
+  function showFor(roleName){
+    var role=ROLES[roleName];
+    if(!role) return;
+    var state=assess(role);
+    renderReqs(state);
+    var cert=getRoleCert(role);
+    if(cert) showEarned(roleName,role,cert);
+    else showProgress(roleName,role,state);
     panel.classList.add('show');
   }
 
   function markSelectBadges(){
     [].forEach.call(sel.options,function(o){
       if(!o.value) return;
-      var c=COURSES[o.value];
-      if(c&&getCert(c)&&o.text.indexOf('✓')===-1) o.text=o.text+' ✓';
+      var r=ROLES[o.value];
+      if(r&&getRoleCert(r)&&o.text.indexOf('✓')===-1) o.text=o.text+' ✓';
     });
   }
   markSelectBadges();
 
   sel.addEventListener('change',function(){
     if(!sel.value){ panel.classList.remove('show'); setStatus(null); return; }
-    var course=COURSES[sel.value];
-    if(!course){ panel.classList.remove('show'); setStatus(null); return; }
-    showFor(sel.value,course);
+    showFor(sel.value);
     panel.scrollIntoView({behavior:'smooth',block:'nearest'});
   });
 })();

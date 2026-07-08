@@ -60,7 +60,7 @@
   <div class="done-card">
     <div class="done-seal"><i class="fa-solid fa-circle-check"></i></div>
     <h2>Congratulations!</h2>
-    <p>You've finished the course. Take the assessment to earn your certificate.</p>
+    <p>You've finished the course — your reading has been recorded toward certification.</p>
     <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
       <a class="btn" href="certificate.html"><i class="fa-solid fa-award"></i> Get certified</a>
       <a class="btn ghost" href="nursery.html"><i class="fa-solid fa-arrow-left"></i> Back to main page</a>
@@ -76,10 +76,23 @@
   var stepEl=document.getElementById('pstep'),nameEl=document.getElementById('pname');
   var prevBtn=document.getElementById('prevBtn'),nextBtn=document.getElementById('nextBtn');
   var total=steps.length, cur=0;
+  var SLUG='admin-operation';
+  var seen={};
+  try{JSON.parse(localStorage.getItem('mjm-read-'+SLUG)||'[]').forEach(function(n){seen[n]=1});}catch(e){}
+  function record(i){
+    seen[i]=1;
+    var arr=Object.keys(seen).map(Number);
+    try{
+      localStorage.setItem('mjm-read-'+SLUG,JSON.stringify(arr));
+      localStorage.setItem('mjm-pages-'+SLUG,String(total));
+      if(arr.length>=total) localStorage.setItem('mjm-done-'+SLUG,'1');
+    }catch(e){}
+  }
   [].forEach.call(document.querySelectorAll('.reveal'),function(el){el.classList.add('in');});
   function nameOf(sec){var t=sec.querySelector('.slide-title');return t?t.textContent.trim():'';}
   function show(i,scroll){
     cur=Math.max(0,Math.min(total-1,i));
+    record(cur);
     steps.forEach(function(s,idx){s.classList.toggle('active',idx===cur);});
     fill.style.width=((cur+1)/total*100)+'%';
     stepEl.textContent='Page '+(cur+1)+' of '+total;

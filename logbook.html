@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practical Logbook — MJM Training Center</title>
+<meta name="description" content="Log your practical field work — every task you complete counts toward role certification.">
+<meta name="theme-color" content="#1E3A20">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="index.html"><i class="fa-solid fa-list-check"></i> Practical Logbook</a>
+    <a class="homelink" href="index.html"><i class="fa-solid fa-arrow-left"></i> Module Mainpage</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <span class="blob b1"></span><span class="blob b2"></span>
+  <div class="hero-in">
+    <div class="seed"><i class="fa-solid fa-list-check"></i></div>
+    <div class="eyebrow">Practical Experience</div>
+    <h1>Practical Logbook</h1>
+    <div class="rule"></div>
+    <p class="lede">Tap <b>+</b> every time you complete a task on site. Your counts accumulate here and unlock role certification once you reach each role's targets.</p>
+  </div>
+</header>
+
+<section class="slide"><div class="wrap">
+  <div class="cert-pick" style="max-width:760px">
+    <div id="logGroups"></div>
+
+    <a class="cert-banner" href="certificate.html" style="margin-top:30px">
+      <div class="cb-icon"><i class="fa-solid fa-award"></i></div>
+      <div class="cb-text">
+        <h3>Check your certification progress</h3>
+        <p>See how your logged work counts toward each role's requirements — and claim your certificate when you're ready.</p>
+      </div>
+      <span class="cb-go"><i class="fa-solid fa-arrow-right"></i></span>
+    </a>
+  </div>
+</div></section>
+
+<footer>
+  <p><b>MJM Training Center</b> · Practical Logbook</p>
+</footer>
+
+<script>
+(function(){
+  /* Keep keys in sync with certificate.html role requirements. */
+  var GROUPS=[
+    { title:'Field Work', sub:'Nursery operations carried out in the field.', color:'ib-green', acts:[
+      {key:'seed-planting', name:'Seeds Planting',         icon:'fa-seedling',        desc:'Batches of germinated seeds planted'},
+      {key:'seed-culling',  name:'Seed-Damage Culling',    icon:'fa-filter',          desc:'Damaged seeds culled while planting'},
+      {key:'watering',      name:'Watering Sessions',      icon:'fa-droplet',         desc:'Watering rounds completed'},
+      {key:'manuring',      name:'Manuring Rounds',        icon:'fa-flask',           desc:'Fertiliser applied per schedule'},
+      {key:'weeding',       name:'Weeding Rounds',         icon:'fa-scissors',        desc:'Weeding of trays or polybags'},
+      {key:'spraying',      name:'Pest & Disease Sprays',  icon:'fa-bug',             desc:'Spray rounds per schedule'},
+      {key:'interrow',      name:'Inter-Row Sprays',       icon:'fa-spray-can',       desc:'Weed control between rows'},
+      {key:'transplanting', name:'Seedlings Transplanted', icon:'fa-right-left',      desc:'Pre-nursery to main-nursery moves'},
+      {key:'culling',       name:'Culling Checks',         icon:'fa-magnifying-glass',desc:'Culling checkpoints carried out'}
+    ]},
+    { title:'Troubleshoot & Cases', sub:'Problems logged and resolved in Carlos.', color:'ib-earth', acts:[
+      {key:'case-open',  name:'Carlos Cases Opened',   icon:'fa-circle-plus',  desc:'New cases opened in Carlos'},
+      {key:'case-solve', name:'Carlos Cases Resolved', icon:'fa-circle-check', desc:'Cases resolved within one week'}
+    ]},
+    { title:'Site Office', sub:'Admin and sales work at the site office.', color:'ib-forest', acts:[
+      {key:'order',      name:'Sales Orders Processed', icon:'fa-cart-shopping',  desc:'Online orders verified and completed'},
+      {key:'report',     name:'Batch Reports Filed',    icon:'fa-file-lines',     desc:'Any of the six batch reports'},
+      {key:'collection', name:'Collections Handled',    icon:'fa-truck-ramp-box', desc:'Customer collections at the plot'}
+    ]}
+  ];
+
+  function loadLog(){ try{ return JSON.parse(localStorage.getItem('mjm-log')||'{}'); }catch(e){ return {}; } }
+  function saveLog(log){ try{ localStorage.setItem('mjm-log',JSON.stringify(log)); }catch(e){} }
+  var log=loadLog();
+
+  var root=document.getElementById('logGroups');
+
+  GROUPS.forEach(function(g){
+    var grp=document.createElement('div');
+    grp.className='req-group';
+    grp.innerHTML='<h3>'+g.title+'</h3><div class="rg-sub">'+g.sub+'</div>';
+    g.acts.forEach(function(a){
+      var row=document.createElement('div');
+      row.className='act';
+      row.innerHTML=
+        '<div class="icon-badge '+g.color+'"><i class="fa-solid '+a.icon+'"></i></div>'+
+        '<div class="act-body"><h3>'+a.name+'</h3><p>'+a.desc+'</p></div>'+
+        '<div class="counter">'+
+          '<button class="cbtn minus" aria-label="Remove one from '+a.name+'"><i class="fa-solid fa-minus"></i></button>'+
+          '<span class="cnt">'+(log[a.key]||0)+'</span>'+
+          '<button class="cbtn plus" aria-label="Add one to '+a.name+'"><i class="fa-solid fa-plus"></i></button>'+
+        '</div>';
+      var cnt=row.querySelector('.cnt'),
+          minus=row.querySelector('.minus'),
+          plus=row.querySelector('.plus');
+      function set(v){
+        log[a.key]=Math.max(0,v);
+        cnt.textContent=log[a.key];
+        minus.disabled=(log[a.key]===0);
+        saveLog(log);
+      }
+      minus.disabled=((log[a.key]||0)===0);
+      plus.addEventListener('click',function(){ set((log[a.key]||0)+1); });
+      minus.addEventListener('click',function(){ set((log[a.key]||0)-1); });
+      grp.appendChild(row);
+    });
+    root.appendChild(grp);
+  });
+})();
+</script>
+
+</body>
+</html>

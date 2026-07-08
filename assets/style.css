@@ -9,6 +9,7 @@
     --maxw:1080px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
+  [hidden]{display:none!important}
   html{scroll-behavior:smooth;scroll-padding-top:74px}
   body{font-family:var(--sans);color:var(--ink);background:#EDEFE7;line-height:1.5;-webkit-font-smoothing:antialiased}
   h1,h2,h3{font-family:var(--serif);font-weight:700;line-height:1.12}
@@ -463,37 +464,27 @@
   .cert-note{margin-top:18px;font-size:13.5px;color:var(--mute);min-height:20px}
   .cert-note b{color:var(--forest)}
 
-  /* ---------- assessment quiz ---------- */
-  .quiz{display:none;margin-top:26px}
-  .quiz.show{display:block;animation:pagein .4s ease}
-  .quiz-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
-  .quiz-count{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--earth)}
-  .quiz-course{font-family:var(--serif);font-weight:700;color:var(--forest);font-size:15px;
-    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .quiz-bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-bottom:20px}
-  .quiz-bar .qfill{height:100%;background:var(--leaf);width:0;transition:width .3s ease}
-  .qcard{background:var(--card);border-radius:16px;padding:26px;box-shadow:0 3px 10px rgba(27,42,23,.07)}
-  .qtext{font-family:var(--serif);font-weight:700;font-size:20px;color:var(--forest);margin-bottom:18px}
-  .opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:#fff;
-    border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px;cursor:pointer;
-    font-family:var(--sans);font-size:14.5px;color:var(--ink);transition:border-color .15s,background .15s}
-  .opt:hover{border-color:var(--leaf)}
-  .opt .odot{flex:none;width:20px;height:20px;border-radius:50%;border:2px solid #c9d2ba;
-    display:grid;place-items:center;transition:border-color .15s}
-  .opt .odot::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--green);
-    transform:scale(0);transition:transform .15s}
-  .opt.sel{border-color:var(--green);background:#eef4e2}
-  .opt.sel .odot{border-color:var(--green)}
-  .opt.sel .odot::after{transform:scale(1)}
-  .quiz-nav{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
-  .quiz-nav .btn{margin-top:0}
-  .quiz-result{text-align:center;padding:10px 0 4px}
-  .scorering{width:110px;height:110px;border-radius:50%;margin:0 auto 16px;display:grid;place-items:center;
-    font-family:var(--serif);font-weight:700;font-size:30px;color:#fff}
-  .scorering.pass{background:linear-gradient(135deg,var(--leaf),var(--green))}
-  .scorering.fail{background:linear-gradient(135deg,#c98a5a,#9C5E2C)}
-  .quiz-result h3{font-family:var(--serif);font-size:24px;color:var(--forest);margin-bottom:8px}
-  .quiz-result p{color:var(--mute);font-size:14.5px;max-width:46ch;margin:0 auto}
+  /* ---------- role requirements checklist ---------- */
+  .req-group{margin-top:28px}
+  .req-group h3{font-family:var(--serif);color:var(--forest);font-size:19px;margin-bottom:2px}
+  .req-group .rg-sub{color:var(--mute);font-size:13.5px;margin-bottom:14px}
+  .req-group .rg-sub a{color:var(--green);font-weight:700;text-decoration:underline;text-decoration-color:var(--moss)}
+  .req{display:flex;align-items:center;gap:14px;background:var(--card);border-radius:12px;
+    padding:14px 18px;margin-bottom:10px;box-shadow:0 2px 8px rgba(27,42,23,.06)}
+  .req.met{background:#eaf2dd}
+  .req .icon-badge{width:44px;height:44px;font-size:17px;background:var(--forest)}
+  .req.met .icon-badge{background:var(--green)}
+  .req .req-body{flex:1;min-width:0}
+  .req .req-name{font-weight:700;color:var(--forest);font-size:14.5px}
+  .req .req-name a:hover{color:var(--green)}
+  .req .req-count{font-size:12.5px;color:var(--mute);margin-top:2px}
+  .req .bar{height:6px;background:#dde3d2;border-radius:3px;overflow:hidden;margin-top:8px}
+  .req .bar .fill{display:block;height:100%;background:var(--earth);border-radius:3px}
+  .req.met .bar .fill{background:var(--leaf)}
+  .req .req-state{flex:none;font-size:20px;color:#c7d0bb}
+  .req.met .req-state{color:var(--leaf)}
+
+  /* claim name form */
   .name-form{max-width:380px;margin:22px auto 0;text-align:left}
   .name-form label{display:block;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
     color:var(--earth);margin-bottom:8px}
@@ -501,6 +492,26 @@
     font-size:16px;font-family:var(--sans)}
   .name-form input:focus{outline:none;border-color:var(--leaf)}
   .name-form .err{color:#b23b2e;font-size:13px;font-weight:600;min-height:18px;margin-top:6px}
+
+  /* ---------- practical logbook ---------- */
+  .act{display:flex;align-items:center;gap:14px;background:var(--card);border-radius:12px;
+    padding:14px 18px;margin-bottom:10px;box-shadow:0 2px 8px rgba(27,42,23,.06)}
+  .act .icon-badge{width:44px;height:44px;font-size:17px}
+  .act .act-body{flex:1;min-width:0}
+  .act h3{font-size:15px;color:var(--forest)}
+  .act p{font-size:12.5px;color:var(--mute)}
+  .counter{display:flex;align-items:center;gap:8px;flex:none}
+  .cbtn{width:38px;height:38px;border-radius:10px;border:0;cursor:pointer;font-size:15px;
+    display:grid;place-items:center;background:var(--forest);color:#fff;transition:background .15s}
+  .cbtn:hover{background:var(--green)}
+  .cbtn.minus{background:transparent;color:var(--forest);border:1.5px solid var(--line)}
+  .cbtn.minus:hover{background:var(--card-e)}
+  .cbtn[disabled]{opacity:.3;cursor:not-allowed}
+  .cnt{min-width:52px;text-align:center;font-family:var(--serif);font-weight:700;font-size:22px;color:var(--forest)}
+  @media (max-width:560px){
+    .act{flex-wrap:wrap}
+    .act .act-body{min-width:60%}
+  }
 
   /* earned certificate details */
   .certificate .cname{font-family:var(--serif);font-weight:700;font-size:clamp(24px,4.5vw,32px);color:var(--forest);
@@ -522,11 +533,12 @@
     text-transform:uppercase;background:#dceac8;color:var(--green);border-radius:12px;padding:3px 9px;
     margin-left:10px;vertical-align:1px}
   .done-pill.cert{background:#f5e6c4;color:#8a6a1f}
+  .done-pill.part{background:#f0e3d2;color:var(--earth-d)}
 
   /* print: certificate only */
   @media print{
     body{background:#fff}
-    .topbar,.hero,footer,.cert-pick>label,.cert-select,.quiz,.cert-actions,.cert-note,.cstatus{display:none!important}
+    .topbar,.hero,footer,.cert-pick>label,.cert-select,.reqs,.name-form,.cert-actions,.cert-note,.cstatus{display:none!important}
     .slide{border:0;padding:10px 0}
     .cert-panel{margin-top:0}
     .certificate{box-shadow:none;page-break-inside:avoid}
