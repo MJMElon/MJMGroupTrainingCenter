@@ -5,8 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Team &amp; Resource Management — MJM Training Center</title>
 <meta name="description" content="Team & resource management training for Nursery Managers (coming soon).">
+<meta name="theme-color" content="#1E3A20">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link rel="stylesheet" href="assets/style.css">
+<script>try{if(!localStorage.getItem('mjm-user'))location.replace('login.html')}catch(e){}</script>
 </head>
 <body>
 
@@ -47,10 +50,24 @@
   var stepEl=document.getElementById('pstep'),nameEl=document.getElementById('pname');
   var prevBtn=document.getElementById('prevBtn'),nextBtn=document.getElementById('nextBtn');
   var total=steps.length, cur=0;
+  var SLUG='management';
+  var PFX='mjm-u-'+(localStorage.getItem('mjm-user')||'guest')+'-';
+  var seen={};
+  try{JSON.parse(localStorage.getItem(PFX+'read-'+SLUG)||'[]').forEach(function(n){seen[n]=1});}catch(e){}
+  function record(i){
+    seen[i]=1;
+    var arr=Object.keys(seen).map(Number);
+    try{
+      localStorage.setItem(PFX+'read-'+SLUG,JSON.stringify(arr));
+      localStorage.setItem(PFX+'pages-'+SLUG,String(total));
+      if(arr.length>=total) localStorage.setItem(PFX+'done-'+SLUG,'1');
+    }catch(e){}
+  }
   [].forEach.call(document.querySelectorAll('.reveal'),function(el){el.classList.add('in');});
   function nameOf(sec){var t=sec.querySelector('.slide-title');return t?t.textContent.trim():'';}
   function show(i,scroll){
     cur=Math.max(0,Math.min(total-1,i));
+    record(cur);
     steps.forEach(function(s,idx){s.classList.toggle('active',idx===cur);});
     fill.style.width=((cur+1)/total*100)+'%';
     stepEl.textContent='Page '+(cur+1)+' of '+total;

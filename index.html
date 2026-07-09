@@ -5,8 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MJM Training Center</title>
 <meta name="description" content="MJM Training Center — nursery training, vibe coding, and role-based training pathways.">
+<meta name="theme-color" content="#1E3A20">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link rel="stylesheet" href="assets/style.css">
+<script>try{if(!localStorage.getItem('mjm-user'))location.replace('login.html')}catch(e){}</script>
 </head>
 <body>
 
@@ -52,7 +55,15 @@
     <div class="cb-icon"><i class="fa-solid fa-award"></i></div>
     <div class="cb-text">
       <h3>Get certified</h3>
-      <p>Pick a course you've completed, take the assessment, and earn your certificate of completion.</p>
+      <p>Pick the role you're training for — read all its course slides, meet its practical targets, and claim your certificate.</p>
+    </div>
+    <span class="cb-go"><i class="fa-solid fa-arrow-right"></i></span>
+  </a>
+  <a class="cert-banner" href="logbook.html" style="margin-top:18px">
+    <div class="cb-icon" style="background:linear-gradient(135deg,var(--leaf),var(--green))"><i class="fa-solid fa-list-check"></i></div>
+    <div class="cb-text">
+      <h3>Practical Logbook</h3>
+      <p>Log your field work every time you do it — seeds planted, cases resolved, orders processed — and build toward certification.</p>
     </div>
     <span class="cb-go"><i class="fa-solid fa-arrow-right"></i></span>
   </a>
@@ -61,6 +72,9 @@
 <footer>
   <p><b>MJM Training Center</b></p>
 </footer>
+
+<script src="assets/app.js"></script>
+<script>MJM.initTopbar();</script>
 
 </body>
 </html>

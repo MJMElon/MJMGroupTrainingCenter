@@ -5,8 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nursery Operation — MJM Training Center</title>
 <meta name="description" content="Staff training guide for nursery operations, from seed planting to seedling sales.">
+<meta name="theme-color" content="#1E3A20">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link rel="stylesheet" href="assets/style.css">
+<script>try{if(!localStorage.getItem('mjm-user'))location.replace('login.html')}catch(e){}</script>
 </head>
 <body>
 
@@ -377,8 +380,11 @@
   <div class="done-card">
     <div class="done-seal"><i class="fa-solid fa-circle-check"></i></div>
     <h2>Congratulations!</h2>
-    <p>You've finished the course.</p>
-    <a class="btn" href="nursery.html"><i class="fa-solid fa-arrow-left"></i> Back to main page</a>
+    <p>You've finished the course — your reading has been recorded toward certification.</p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <a class="btn" href="certificate.html"><i class="fa-solid fa-award"></i> Get certified</a>
+      <a class="btn ghost" href="nursery.html"><i class="fa-solid fa-arrow-left"></i> Back to main page</a>
+    </div>
   </div>
 </div>
 
@@ -391,6 +397,19 @@
   var stepEl=document.getElementById('pstep'),nameEl=document.getElementById('pname');
   var prevBtn=document.getElementById('prevBtn'),nextBtn=document.getElementById('nextBtn');
   var total=steps.length, cur=0;
+  var SLUG='operation';
+  var PFX='mjm-u-'+(localStorage.getItem('mjm-user')||'guest')+'-';
+  var seen={};
+  try{JSON.parse(localStorage.getItem(PFX+'read-'+SLUG)||'[]').forEach(function(n){seen[n]=1});}catch(e){}
+  function record(i){
+    seen[i]=1;
+    var arr=Object.keys(seen).map(Number);
+    try{
+      localStorage.setItem(PFX+'read-'+SLUG,JSON.stringify(arr));
+      localStorage.setItem(PFX+'pages-'+SLUG,String(total));
+      if(arr.length>=total) localStorage.setItem(PFX+'done-'+SLUG,'1');
+    }catch(e){}
+  }
 
   // reveal everything up front; per-page animation handles the entrance
   [].forEach.call(document.querySelectorAll('.reveal'),function(el){el.classList.add('in');});
@@ -399,6 +418,7 @@
 
   function show(i,scroll){
     cur=Math.max(0,Math.min(total-1,i));
+    record(cur);
     steps.forEach(function(s,idx){s.classList.toggle('active',idx===cur);});
     if(hero) hero.style.display=(cur===0?'':'none');
     fill.style.width=((cur+1)/total*100)+'%';
@@ -414,7 +434,10 @@
   prevBtn.addEventListener('click',function(){ if(cur>0) show(cur-1); });
   nextBtn.addEventListener('click',function(){
     if(cur<total-1) show(cur+1);
-    else document.getElementById('doneModal').classList.add('show');
+    else{
+      try{localStorage.setItem(PFX+'done-operation','1');}catch(e){}
+      document.getElementById('doneModal').classList.add('show');
+    }
   });
 
   // keyboard navigation
