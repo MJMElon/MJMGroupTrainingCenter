@@ -236,6 +236,23 @@
   .homelink{font-size:13px;font-weight:600;color:#D7E3C4;padding:6px 10px;border-radius:6px;white-space:nowrap}
   .homelink:hover{background:rgba(255,255,255,.12);color:#fff}
 
+  /* ---------- signed-in user chip ---------- */
+  .userbox{display:flex;align-items:center;gap:8px;margin-left:auto}
+  .topbar-in .homelink{margin-left:auto}
+  .topbar-in .homelink~.userbox{margin-left:0}
+  .userchip{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:#fff;
+    background:rgba(255,255,255,.12);border-radius:20px;padding:6px 13px;white-space:nowrap;
+    max-width:180px;overflow:hidden;text-overflow:ellipsis}
+  .userchip i{color:var(--moss)}
+  .logout{display:inline-flex;align-items:center;gap:6px;background:none;border:1px solid rgba(255,255,255,.25);
+    color:#D7E3C4;font-size:12px;font-weight:700;border-radius:20px;padding:6px 12px;cursor:pointer;
+    font-family:var(--sans);white-space:nowrap;transition:background .15s,color .15s}
+  .logout:hover{background:rgba(255,255,255,.12);color:#fff}
+  @media (max-width:560px){
+    .userchip{max-width:110px}
+    .logout .lbl{display:none}
+  }
+
   /* ---------- landing modules ---------- */
   .modules{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px}
   .module-card{display:flex;flex-direction:column;background:var(--card);border-radius:16px;padding:28px;
@@ -330,6 +347,9 @@
   .gate-card input{width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:18px;
     text-align:center;letter-spacing:.35em;font-family:var(--sans);margin-bottom:12px}
   .gate-card input:focus{outline:none;border-color:var(--leaf)}
+  .gate-card input.plain{letter-spacing:normal;text-align:left;font-size:15.5px}
+  .login-brand{font-family:var(--serif);font-weight:700;font-size:17px;color:var(--forest);margin-bottom:20px}
+  .login-brand .mjm{background:var(--earth);color:#fff;border-radius:8px;padding:2px 8px;margin-right:4px}
   .gate-err{color:#b23b2e;font-size:13px;min-height:18px;margin-bottom:10px;font-weight:600}
   .gate.shake .gate-card{animation:shake .42s}
   @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-9px)}75%{transform:translateX(9px)}}
@@ -373,7 +393,7 @@
   /* role × skill matrix */
   .matrix-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:14px;
     box-shadow:0 3px 10px rgba(27,42,23,.07)}
-  .matrix{width:100%;border-collapse:separate;border-spacing:0;min-width:660px;background:var(--card);
+  .matrix{width:100%;border-collapse:separate;border-spacing:0;min-width:800px;background:var(--card);
     border:1px solid var(--line);border-radius:14px;overflow:hidden}
   .matrix th,.matrix td{padding:14px 10px;text-align:center;border-bottom:1px solid var(--line)}
   .matrix tbody tr:last-child td{border-bottom:0}
@@ -395,6 +415,13 @@
   .matrix .go{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:8px;
     background:var(--forest);color:#fff;font-size:14px;transition:background .15s,transform .15s}
   .matrix .go:hover{background:var(--green);transform:translateX(2px)}
+  .matrix .go.alt{background:var(--earth)}
+  .matrix .go.alt:hover{background:var(--earth-d)}
+  .score-pill{display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:12.5px;
+    background:#f0e3d2;color:var(--earth-d);border-radius:14px;padding:5px 12px;white-space:nowrap;
+    transition:transform .15s,box-shadow .15s}
+  .score-pill:hover{transform:translateY(-1px);box-shadow:0 3px 8px rgba(27,42,23,.15)}
+  .score-pill.full{background:#dceac8;color:var(--green)}
   .path-note{margin-top:24px;background:var(--card-e);border:1px solid var(--line);border-radius:14px;
     padding:20px 22px;display:flex;gap:16px;align-items:flex-start}
   .path-note .icon-badge{flex:none;width:48px;height:48px;font-size:20px;background:var(--earth)}
@@ -508,6 +535,12 @@
   .cbtn.minus:hover{background:var(--card-e)}
   .cbtn[disabled]{opacity:.3;cursor:not-allowed}
   .cnt{min-width:52px;text-align:center;font-family:var(--serif);font-weight:700;font-size:22px;color:var(--forest)}
+  .act.met{background:#eaf2dd}
+  .act .bar{height:6px;background:#dde3d2;border-radius:3px;overflow:hidden;margin-top:8px}
+  .act .bar .fill{display:block;height:100%;background:var(--earth);border-radius:3px}
+  .act.met .bar .fill{background:var(--leaf)}
+  .act .tgt{font-size:12px;font-weight:700;color:var(--earth-d);white-space:nowrap}
+  .act.met .tgt{color:var(--green)}
   @media (max-width:560px){
     .act{flex-wrap:wrap}
     .act .act-body{min-width:60%}

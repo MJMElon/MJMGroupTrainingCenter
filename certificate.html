@@ -4,11 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Earn a Certificate — MJM Training Center</title>
-<meta name="description" content="Role certification — read all course slides and log the required practical experience to earn your certificate.">
+<meta name="description" content="Role certification — complete each program's training slides and practical record to earn your certificate.">
 <meta name="theme-color" content="#1E3A20">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link rel="stylesheet" href="assets/style.css">
+<script>try{if(!localStorage.getItem('mjm-user'))location.replace('login.html')}catch(e){}</script>
 </head>
 <body>
 
@@ -26,7 +27,7 @@
     <div class="eyebrow">Certification</div>
     <h1>Role Certification</h1>
     <div class="rule"></div>
-    <p class="lede">Each role has two kinds of requirements: read every slide of its training courses, and build up real practical experience in your logbook. Complete both to claim your certificate.</p>
+    <p class="lede">Each role requires completing its training programs — read every slide and fulfil each program's practical record. Complete them all to claim your certificate.</p>
   </div>
 </header>
 
@@ -76,54 +77,19 @@
   <p><b>MJM Training Center</b> · Certification</p>
 </footer>
 
+<script src="assets/app.js"></script>
 <script>
 (function(){
-  /* ------- courses (slide counts) ------- */
-  var COURSES={
-    'operation':       {name:'Nursery Operation',            page:'operation.html',       pages:9},
-    'troubleshoot':    {name:'Troubleshoot & Cases',          page:'troubleshoot.html',    pages:4},
-    'admin-operation': {name:'Admin Operation',               page:'admin-operation.html', pages:1},
-    'copn':            {name:'COPN — Code of Practice',       page:'copn.html',            pages:1},
-    'sales':           {name:'Sales',                         page:'sales.html',           pages:2},
-    'management':      {name:'Team & Resource Management',    page:'management.html',      pages:1}
-  };
+  if(!MJM.user()) return;
+  MJM.initTopbar();
 
-  /* ------- practical activities (shared with logbook.html) ------- */
-  var ACTIVITIES={
-    'seed-planting': {name:'Seeds Planting',          icon:'fa-seedling'},
-    'seed-culling':  {name:'Seed-Damage Culling',     icon:'fa-filter'},
-    'watering':      {name:'Watering Sessions',       icon:'fa-droplet'},
-    'manuring':      {name:'Manuring Rounds',         icon:'fa-flask'},
-    'weeding':       {name:'Weeding Rounds',          icon:'fa-scissors'},
-    'spraying':      {name:'Pest & Disease Sprays',   icon:'fa-bug'},
-    'interrow':      {name:'Inter-Row Sprays',        icon:'fa-spray-can'},
-    'transplanting': {name:'Seedlings Transplanted',  icon:'fa-right-left'},
-    'culling':       {name:'Culling Checks',          icon:'fa-magnifying-glass'},
-    'case-open':     {name:'Carlos Cases Opened',     icon:'fa-circle-plus'},
-    'case-solve':    {name:'Carlos Cases Resolved',   icon:'fa-circle-check'},
-    'order':         {name:'Sales Orders Processed',  icon:'fa-cart-shopping'},
-    'report':        {name:'Batch Reports Filed',     icon:'fa-file-lines'},
-    'collection':    {name:'Collections Handled',     icon:'fa-truck-ramp-box'}
-  };
-
-  /* ------- role requirements: courses to read + practical targets -------
-     Adjust the target numbers here as needed. */
+  /* Role = the programs that must be completed (slides + practical record). */
   var ROLES={
-    'Assistant Field Conductor': { slug:'afc',
-      courses:['operation'],
-      practical:{ 'seed-planting':50, 'watering':30, 'weeding':10, 'manuring':10 } },
-    'Field Conductor': { slug:'fc',
-      courses:['operation','troubleshoot'],
-      practical:{ 'seed-planting':100, 'transplanting':50, 'culling':20, 'spraying':20, 'case-open':10, 'case-solve':10 } },
-    'Administrator': { slug:'admin',
-      courses:['operation','admin-operation','sales'],
-      practical:{ 'order':20, 'report':30, 'collection':10 } },
-    'Auditor': { slug:'auditor',
-      courses:['operation','troubleshoot','admin-operation','copn'],
-      practical:{ 'culling':30, 'case-solve':20, 'report':20 } },
-    'Nursery Manager': { slug:'manager',
-      courses:['operation','troubleshoot','admin-operation','copn','sales','management'],
-      practical:{ 'seed-planting':100, 'transplanting':50, 'order':30, 'report':30, 'case-solve':20 } }
+    'Assistant Field Conductor': {slug:'afc',     programs:['operation']},
+    'Field Conductor':           {slug:'fc',      programs:['operation','troubleshoot']},
+    'Administrator':             {slug:'admin',   programs:['operation','admin-operation','sales']},
+    'Auditor':                   {slug:'auditor', programs:['operation','troubleshoot','admin-operation','copn']},
+    'Nursery Manager':           {slug:'manager', programs:['operation','troubleshoot','admin-operation','copn','sales','management']}
   };
 
   var sel=document.getElementById('roleSelect'),
@@ -142,20 +108,8 @@
       note=document.getElementById('certNote'),
       reqsEl=document.getElementById('reqs');
 
-  function read(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
-  function store(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
-  function readCount(slug){
-    try{ return JSON.parse(read('mjm-read-'+slug)||'[]').length; }catch(e){ return 0; }
-  }
-  function pageTotal(slug){
-    var stored=parseInt(read('mjm-pages-'+slug)||'0',10);
-    return stored>0?stored:COURSES[slug].pages;
-  }
-  function logCounts(){
-    try{ return JSON.parse(read('mjm-log')||'{}'); }catch(e){ return {}; }
-  }
   function getRoleCert(role){
-    var raw=read('mjm-rolecert-'+role.slug); if(!raw) return null;
+    var raw=MJM.get('rolecert-'+role.slug); if(!raw) return null;
     try{ return JSON.parse(raw); }catch(e){ return null; }
   }
   function fmtDate(iso){
@@ -168,67 +122,44 @@
     status.hidden=false; status.className='cstatus '+kind; status.innerHTML=html;
   }
 
-  /* ------- compute requirement state for a role ------- */
   function assess(role){
-    var log=logCounts();
-    var reading=role.courses.map(function(slug){
-      var got=readCount(slug), total=pageTotal(slug);
-      return { slug:slug, name:COURSES[slug].name, page:COURSES[slug].page,
-               got:Math.min(got,total), total:total, met:got>=total };
+    var progs=role.programs.map(function(slug){
+      var p=MJM.progress(slug);
+      p.slug=slug; p.name=MJM.PROGRAMS[slug].name; p.page=MJM.PROGRAMS[slug].page;
+      return p;
     });
-    var practical=Object.keys(role.practical).map(function(key){
-      var target=role.practical[key], got=log[key]||0;
-      return { key:key, name:ACTIVITIES[key].name, icon:ACTIVITIES[key].icon,
-               got:got, target:target, met:got>=target };
-    });
-    var met=reading.filter(function(r){return r.met}).length +
-            practical.filter(function(p){return p.met}).length;
-    return { reading:reading, practical:practical,
-             met:met, total:reading.length+practical.length,
-             allMet:met===reading.length+practical.length };
-  }
-
-  function reqRow(icon,nameHtml,countText,got,target,met){
-    var row=el('div','req'+(met?' met':''));
-    row.appendChild(el('div','icon-badge','<i class="fa-solid '+icon+'"></i>'));
-    var body=el('div','req-body');
-    body.appendChild(el('div','req-name',nameHtml));
-    body.appendChild(el('div','req-count',countText));
-    var bar=el('div','bar');
-    var pct=target>0?Math.min(100,got/target*100):0;
-    var fill=el('span','fill'); fill.style.width=pct+'%';
-    bar.appendChild(fill); body.appendChild(bar);
-    row.appendChild(body);
-    row.appendChild(el('div','req-state','<i class="fa-solid '+(met?'fa-circle-check':'fa-circle')+'"></i>'));
-    return row;
+    var met=progs.filter(function(p){return p.complete;}).length;
+    return {programs:progs, met:met, total:progs.length, allMet:met===progs.length};
   }
 
   function renderReqs(state){
     reqsEl.innerHTML='';
-
-    var g1=el('div','req-group');
-    g1.appendChild(el('h3',null,'<i class="fa-solid fa-book-open" style="color:var(--green);margin-right:8px"></i>Course Reading'));
-    g1.appendChild(el('div','rg-sub','Open each course and read every slide — your reading is recorded automatically.'));
-    state.reading.forEach(function(r){
-      g1.appendChild(reqRow('fa-book-open',
-        '<a href="'+r.page+'">'+r.name+'</a>',
-        r.met?'All '+r.total+' slides read':r.got+' of '+r.total+' slides read',
-        r.got,r.total,r.met));
+    var g=el('div','req-group');
+    g.appendChild(el('h3',null,'<i class="fa-solid fa-graduation-cap" style="color:var(--green);margin-right:8px"></i>Program Completion'));
+    g.appendChild(el('div','rg-sub','Each program needs all training slides read and its <a href="logbook.html">practical record</a> fulfilled.'));
+    state.programs.forEach(function(p){
+      var row=el('div','req'+(p.complete?' met':''));
+      row.appendChild(el('div','icon-badge','<i class="fa-solid fa-book-open"></i>'));
+      var body=el('div','req-body');
+      var nm=el('div','req-name');
+      var link=el('a',null,p.name);
+      link.href='logbook.html?program='+p.slug;
+      nm.appendChild(link);
+      body.appendChild(nm);
+      body.appendChild(el('div','req-count',
+        p.complete?'Program complete'
+                  :'Slides '+p.slides.got+'/'+p.slides.total+
+                   (p.practical.length?' · Practical '+p.practicalPct+'%':'')));
+      var bar=el('div','bar');
+      var fill=el('span','fill'); fill.style.width=p.score+'%';
+      bar.appendChild(fill); body.appendChild(bar);
+      row.appendChild(body);
+      row.appendChild(el('div','req-state','<i class="fa-solid '+(p.complete?'fa-circle-check':'fa-circle')+'"></i>'));
+      g.appendChild(row);
     });
-    reqsEl.appendChild(g1);
-
-    var g2=el('div','req-group');
-    g2.appendChild(el('h3',null,'<i class="fa-solid fa-list-check" style="color:var(--green);margin-right:8px"></i>Practical Experience'));
-    g2.appendChild(el('div','rg-sub','Log each task in the <a href="logbook.html">Practical Logbook</a> every time you do it on site.'));
-    state.practical.forEach(function(p){
-      g2.appendChild(reqRow(p.icon,p.name,
-        p.got+' of '+p.target+' logged'+(p.met?' — done':''),
-        p.got,p.target,p.met));
-    });
-    reqsEl.appendChild(g2);
+    reqsEl.appendChild(g);
   }
 
-  /* ------- card states ------- */
   function showProgress(roleName,role,state){
     lead.textContent='This certifies qualification for the role of';
     nameEl.hidden=true; meta.hidden=true; claimBox.hidden=true;
@@ -238,23 +169,23 @@
 
     if(state.allMet){
       claimBox.hidden=false;
-      nameInput.value=read('mjm-name')||'';
+      nameInput.value=MJM.get('name')||MJM.userName()||'';
       nameErr.textContent='';
       var claim=el('button','btn','<i class="fa-solid fa-award"></i> Claim certificate');
       claim.addEventListener('click',function(){
         var name=nameInput.value.trim();
         if(!name){ nameErr.textContent='Please enter your name.'; nameInput.focus(); return; }
-        store('mjm-name',name);
-        var cert={name:name,date:new Date().toISOString(),met:state.met,total:state.total};
-        store('mjm-rolecert-'+role.slug,JSON.stringify(cert));
+        MJM.set('name',name);
+        var cert={name:name,date:new Date().toISOString()};
+        MJM.set('rolecert-'+role.slug,JSON.stringify(cert));
         markSelectBadges();
         showEarned(roleName,role,cert);
       });
       actions.appendChild(claim);
-      setStatus('ok','<i class="fa-solid fa-circle-check"></i> All '+state.total+' requirements met — claim your certificate');
+      setStatus('ok','<i class="fa-solid fa-circle-check"></i> '+(state.total>1?'All '+state.total+' programs':'Program')+' complete — claim your certificate');
     }else{
-      note.innerHTML='Complete the reading and practical requirements below, then come back to claim your certificate.';
-      setStatus('todo','<i class="fa-solid fa-bars-progress"></i> '+state.met+' of '+state.total+' requirements met');
+      note.innerHTML='Complete each program below — training slides plus practical record — then come back to claim your certificate.';
+      setStatus('todo','<i class="fa-solid fa-bars-progress"></i> '+state.met+' of '+state.total+' programs complete');
     }
   }
 
@@ -264,7 +195,7 @@
     roleEl.textContent='for qualifying as '+roleName;
     meta.hidden=false; claimBox.hidden=true;
     dateEl.innerHTML='<i class="fa-solid fa-calendar-check"></i> '+fmtDate(cert.date);
-    reqsMeta.innerHTML='<i class="fa-solid fa-list-check"></i> All requirements completed';
+    reqsMeta.innerHTML='<i class="fa-solid fa-list-check"></i> All programs completed';
     actions.innerHTML=''; note.innerHTML='';
     reqsEl.style.display='none';
 
